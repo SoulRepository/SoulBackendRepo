@@ -1,0 +1,67 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2022",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@common/config": [
+        "libs/config/src"
+      ],
+      "@common/config/*": [
+        "libs/config/src/*"
+      ],
+      "common": [
+        "src/common"
+      ],
+      "common/*": [
+        "src/common/*"
+      ],
+      "categories": [
+        "src/categories"
+      ],
+      "categories/*": [
+        "src/categories/*"
+      ],
+      "companies": [
+        "src/companies"
+      ],
+      "companies/*": [
+        "src/companies/*"
+      ],
+      "config": [
+        "src/config"
+      ],
+      "config/*": [
+        "src/common/*"
+      ],
+      "contracts": [
+        "src/contracts"
+      ],
+      "contracts/*": [
+        "src/contracts/*"
+      ],
+      "images": [
+        "src/images"
+      ],
+      "images/*": [
+        "src/images/*"
+      ]
+    }
+  }
+}

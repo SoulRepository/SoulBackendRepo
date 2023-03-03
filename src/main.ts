@@ -13,7 +13,7 @@ async function bootstrap() {
 
   const swaggerOptions = new DocumentBuilder()
     .setTitle(configService.get<string>('SERVICE_NAME'))
-    .setDescription('Blaize Keeper')
+    .setDescription('Soul Search')
     .setVersion(getPackageVersion())
     .addBearerAuth({
       type: 'http',
@@ -28,6 +28,6 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(3000);
+  await app.listen(configService.get('PORT'), configService.get('HOST'));
 }
 bootstrap();

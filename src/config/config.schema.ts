@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 export class ConfigSchema {
   @IsNumber()
   @Type(() => Number)
-  PORT = 3355;
+  PORT = 4300;
 
   @IsString()
   HOST = '127.0.0.1';
@@ -21,4 +21,25 @@ export class ConfigSchema {
 
   @IsString()
   DATABASE_URL: string;
+
+  @IsString()
+  IMAGES_S3_ACCESS_KEY: string;
+
+  @IsString()
+  IMAGES_S3_SECRET_KEY: string;
+
+  @IsString()
+  @IsOptional()
+  IMAGES_S3_ENDPOINT?: string;
+
+  @IsString()
+  @IsOptional()
+  IMAGES_S3_REGION?: string;
+
+  @IsString()
+  IMAGES_S3_BUCKET: string;
+
+  @IsNumber()
+  @Type(() => Number)
+  IMAGES_S3_LIMIT = 5000000;
 }

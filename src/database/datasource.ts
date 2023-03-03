@@ -1,12 +1,12 @@
-import { resolve } from 'node:path';
+import { resolve, join } from 'node:path';
 
 import * as pg from 'pg';
 import { parse } from 'pg-connection-string';
 
 import { ConfigService } from '@common/config';
-import { DataSource } from 'typeorm';
-import { DataSourceOptions } from 'typeorm/data-source/DataSourceOptions';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { ConfigSchema } from '../config/config.schema';
+import * as process from 'process';
 
 const configService = new ConfigService<ConfigSchema>(ConfigSchema);
 const parsedUrl = parse(configService.get('DATABASE_URL'));
@@ -21,9 +21,11 @@ export const dbConfig: DataSourceOptions = {
   synchronize: false,
   entities: [
     resolve(__dirname, './../**/*.entity{.ts,.js}'),
-    resolve(__dirname, './../**/*.model{.ts,.js}'),
+    // resolve(__dirname, './../**/*.entity{.ts,.js}'),
   ],
-  migrations: [resolve(__dirname, './migrations/**/*{.ts,.js}')],
+  migrations: [
+    resolve(__dirname, './migrations/**/*{.ts,.js}')
+  ],
   migrationsTableName: 'migrations',
   ssl: Boolean(parsedUrl.ssl),
 };

@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    networks:
+      - api-dev
+    environment:
+      - POSTGRES_USER=keeper
+      - POSTGRES_PASSWORD=keeper
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+  rabbitmq:
+    image: rabbitmq:3.11.5-management
+    restart: always
+    networks:
+      - api-dev
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+    volumes:
+      - rabbit:/var/lib/rabbitmq/mnesia/
+  redis:
+    image: redis
+    restart: always
+    networks:
+      - api-dev
+    ports:
+      - '6379:6379'
+  minio:
+    image: minio/minio:latest
+    restart: always
+    volumes:
+      - 'minio_storage:/data'
+    command: server /data --console-address ":9001"
+    ports:
+      - "80:9000"
+      - "9001:9001"
+#    environment:
+#      MINIO_ACCESS_KEY: K9aF07q6D3
+#      MINIO_SECRET_KEY: HTPa2DuLy1VXqRvYSrSi7wALDyhKyGHk
+    networks:
+      - api-dev
+volumes:
+  db:
+    driver: local
+  rabbit:
+    driver: local
+  minio_storage:
+    driver: local
+
+networks:
+  api-dev:

@@ -1,9 +1,4 @@
-import {
-  ArgumentsHost,
-  BadRequestException,
-  Catch,
-  ExceptionFilter,
-} from '@nestjs/common';
+import { ArgumentsHost, BadRequestException, Catch } from '@nestjs/common';
 import { QueryFailedError } from 'typeorm';
 import { BaseExceptionFilter } from '@nestjs/core';
 

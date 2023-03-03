@@ -1,4 +1,4 @@
-import { resolve, join } from 'node:path';
+import { resolve } from 'node:path';
 
 import * as pg from 'pg';
 import { parse } from 'pg-connection-string';
@@ -6,7 +6,6 @@ import { parse } from 'pg-connection-string';
 import { ConfigService } from '@common/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { ConfigSchema } from '../config/config.schema';
-import * as process from 'process';
 
 const configService = new ConfigService<ConfigSchema>(ConfigSchema);
 const parsedUrl = parse(configService.get('DATABASE_URL'));

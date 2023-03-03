@@ -23,9 +23,7 @@ export const dbConfig: DataSourceOptions = {
     resolve(__dirname, './../**/*.entity{.ts,.js}'),
     // resolve(__dirname, './../**/*.entity{.ts,.js}'),
   ],
-  migrations: [
-    resolve(__dirname, './migrations/**/*{.ts,.js}')
-  ],
+  migrations: [resolve(__dirname, './migrations/**/*{.ts,.js}')],
   migrationsTableName: 'migrations',
   ssl: Boolean(parsedUrl.ssl),
 };

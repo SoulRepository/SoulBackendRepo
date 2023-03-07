@@ -1,7 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { SbtService } from './sbt.service';
 import { CompaniesService } from 'companies/companies.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('SBT')
 @Controller('sbt')
 export class SbtController {
   constructor(

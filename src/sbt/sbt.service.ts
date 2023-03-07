@@ -6,6 +6,7 @@ import { MetadataResult } from './interfaces/metadata.result';
 import { CompaniesService } from 'companies/companies.service';
 import { CompanyWithMetadataResponse } from './dto/company-with-metadata.response';
 import { ImagesService } from 'images/images.service';
+import { DigiProofListResponse } from './dto/digi-proof-list.response';
 
 @Injectable()
 export class SbtService {
@@ -15,7 +16,7 @@ export class SbtService {
     private readonly imagesService: ImagesService,
   ) {}
 
-  async getDigiProofs() {
+  async getDigiProofs(): Promise<DigiProofListResponse[]> {
     const { data } = await this.graphService.sendQuery<DigiProofResult>(
       'get-digi-proofs',
     );

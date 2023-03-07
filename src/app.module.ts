@@ -14,6 +14,8 @@ import { dbConfig } from './database/datasource';
 import { AdminsModule } from './admins/admins.module';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { TypeormExceptionFilter } from 'common/database/typeorm-exception.filter';
+import { GraphModule } from './graph/graph.module';
+import { SbtModule } from './sbt/sbt.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { TypeormExceptionFilter } from 'common/database/typeorm-exception.filter
       retryAttempts: 10,
     }),
     AdminsModule,
+    GraphModule,
+    SbtModule,
   ],
   providers: [
     {

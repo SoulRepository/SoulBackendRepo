@@ -42,4 +42,7 @@ export class ConfigSchema {
   @IsNumber()
   @Type(() => Number)
   IMAGES_S3_LIMIT = 5000000;
+
+  @IsString()
+  SUBGRAPH_URL: string;
 }

@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   DeleteObjectCommand,
+  GetObjectCommand,
   HeadObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -12,6 +13,7 @@ import { Image } from 'entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageType } from 'images/intefaces/image.types';
 import { IMAGE_KEY_RE } from 'images/constants/validation.constants';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 @Injectable()
 export class ImagesService {
@@ -63,6 +65,17 @@ export class ImagesService {
     // TODO: implement ability to delete old images
 
     return entity.save();
+  }
+
+  getImageUrl(image: Image) {
+    if (!image) {
+      return;
+    }
+    const cmd = new GetObjectCommand({
+      Bucket: this.configService.get('IMAGES_S3_BUCKET'),
+      Key: image.key,
+    });
+    return getSignedUrl(this.s3Client, cmd, { expiresIn: 3600 });
   }
 
   createPresignDataForCompany(companyId: number, imageType: ImageType) {

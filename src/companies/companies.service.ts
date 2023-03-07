@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Like, Repository, FindOptionsSelect } from 'typeorm';
+import { Like, Repository, FindOptionsSelect, ILike } from 'typeorm';
 import { Company } from 'entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';
@@ -131,7 +131,13 @@ export class CompaniesService {
     where: FindUniqCompanyDto,
     select?: FindOptionsSelect<Company>,
   ) {
-    return this.companyRepository.findOne({ where, ...(select && { select }) });
+    return this.companyRepository.findOne({
+      where: {
+        ...where,
+        ...(where.address && { address: ILike(where.address) }),
+      },
+      ...(select && { select }),
+    });
   }
 
   async generateImageCredentials(

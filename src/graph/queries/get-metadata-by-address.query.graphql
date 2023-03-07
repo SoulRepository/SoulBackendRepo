@@ -1,0 +1,17 @@
+query GetCompaniesMetadataWithAddress($address: String) {
+    metadataObjects(
+        where: {companies_: {address: $address}}
+    ) {
+        id
+        sbtId
+        digiProofType {
+            id
+        }
+        description
+        uri
+        companies {
+            id
+            address
+        }
+    }
+}

@@ -40,6 +40,7 @@
     "class-transformer-validator": "^0.9.1",
     "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
+    "got": "^11.8.6",
     "pg": "^8.9.0",
     "pg-connection-string": "^2.5.0",
     "reflect-metadata": "^0.1.13",
@@ -48,6 +49,7 @@
     "typeorm": "^0.3.12"
   },
   "devDependencies": {
+    "@graphprotocol/client-cli": "^2.2.19",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",

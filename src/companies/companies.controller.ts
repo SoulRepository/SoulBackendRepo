@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';
 import { CompaniesService } from 'companies/companies.service';
 import { GenerateImageCredentialsDto } from 'companies/dto/generate-image-credentials.dto';
@@ -28,7 +36,7 @@ export class CompaniesController {
     return this.companiesService.findOne({ soulId });
   }
 
-  @Put('/:soulId')
+  @Patch('/:soulId')
   updateCompany(
     @Param('soulId') soulId: string,
     @Body() data: UpdateCompanyDto,

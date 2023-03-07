@@ -18,7 +18,7 @@ export class SbtController {
 
   @Get('metadata/:souldId/:digiProof')
   async getMetadata(
-    @Param('companyId') soulId: string,
+    @Param('souldId') soulId: string,
     @Param('digiProof') digiProof: string,
   ) {
     const company = await this.companiesService.findOne({ soulId });

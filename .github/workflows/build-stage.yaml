@@ -31,13 +31,13 @@ jobs:
           echo "${{secrets.SSH_PRIV}}" > ${key}
           sudo chmod 600 ${key}
           
-          echo "name=${name}" >> stage.txt
-          echo "key1=${key}" >> stage.txt
-          echo "timestamp=${timestamp}" >> dev.txt
-          echo "name=${name}" >> stage.txt
-          echo "key2=${key}" >> stage.txt
-          echo "HOST=${host}" >> stage.txt
-          scp -i ${key} -o "StrictHostKeyChecking no" stage.txt ${host}:/home/ubuntu/stage.txt
+          echo "name=${name}" >> stage-back.txt
+          echo "key1=${key}" >> stage-back.txt
+          echo "timestamp=${timestamp}" >> stage-back.txt
+          echo "name=${name}" >> stage-back.txt
+          echo "key2=${key}" >> stage-back.txt
+          echo "HOST=${host}" >> stage-back.txt
+          scp -i ${key} -o "StrictHostKeyChecking no" stage-back.txt ${host}:/home/ubuntu/stage-back.txt
           
           scp -i ${key} -o "StrictHostKeyChecking no" ${name}-${timestamp}.tar ${host}:${name}-${timestamp}.tar
           ssh -i ${key} -o "StrictHostKeyChecking no" ${host} 'sudo docker load -i '${name}'-'${timestamp}'.tar; sudo docker stop '${name}' || true; sudo docker run -d  --restart always -p 3397:3000 --name '${name}'-new '${name}'-'${timestamp}'; sudo docker rm '${name}' || true; sudo docker rmi $(sudo docker images -q) || true; sudo docker rename '${name}'-new '${name}'; rm '${name}'-'${timestamp}'.tar'

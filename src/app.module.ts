@@ -16,6 +16,7 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { TypeormExceptionFilter } from 'common/database/typeorm-exception.filter';
 import { GraphModule } from './graph/graph.module';
 import { SbtModule } from './sbt/sbt.module';
+import { DigiProofsModule } from './digi-proofs/digi-proofs.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { SbtModule } from './sbt/sbt.module';
     AdminsModule,
     GraphModule,
     SbtModule,
+    DigiProofsModule,
   ],
   providers: [
     {

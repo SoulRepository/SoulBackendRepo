@@ -64,7 +64,7 @@ export class ImagesService {
 
     // TODO: implement ability to delete old images
 
-    return entity.save();
+    return this.imageRepository.save(entity);
   }
 
   getImageUrl(image: Image) {

@@ -10,6 +10,7 @@ import { GenerateImageCredentialsDto } from 'companies/dto/generate-image-creden
 import { FindUniqCompanyDto } from 'companies/dto/find-uniq-company.dto';
 import { MAX_SEARCH_LIMIT } from 'companies/constants/company-query.constants';
 import { UpdateCompanyDto } from 'companies/dto/update-company.dto';
+import { CompanyResolvedImagesDto } from 'companies/dto/company-resolved-images.dto';
 
 @Injectable()
 export class CompaniesService {
@@ -165,6 +166,25 @@ export class CompaniesService {
           companyId,
           'logo',
         )),
+    };
+  }
+
+  async resolveCompanyImages(
+    company: Company,
+  ): Promise<CompanyResolvedImagesDto> {
+    const { logoImage, featuredImage, backgroundImage, ...rest } = company;
+    const [logoImageUrl, backgroundImageUrl, featuredImageUrl] =
+      await Promise.all([
+        this.imagesService.getImageUrl(logoImage),
+        this.imagesService.getImageUrl(backgroundImage),
+        this.imagesService.getImageUrl(featuredImage),
+      ]);
+
+    return {
+      ...rest,
+      logoImageUrl,
+      backgroundImageUrl,
+      featuredImageUrl,
     };
   }
 }

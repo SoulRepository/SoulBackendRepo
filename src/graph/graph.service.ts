@@ -43,6 +43,7 @@ export class GraphService implements OnModuleInit {
   async onModuleInit(): Promise<void> {
     await this.registerQuery('get-digi-proofs');
     await this.registerQuery('get-metadata-by-address');
+    await this.registerQuery('get-metadata');
     // this.sendQuery('get-metadata-by-address', {
     //   address: '0x8f82ca16d4f47bcd1d24c9c93ce2b4e6f8390991',
     // });

@@ -1,6 +1,6 @@
-query GetCompaniesMetadataWithAddress($filter: MetadataObject_filter) {
-    metadataObjects(
-        where: $filter
+query GetCompaniesMetadata($id: Bytes) {
+    metadataObject(
+        id: $id
     ) {
         id
         sbtId

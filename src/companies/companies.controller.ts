@@ -15,39 +15,41 @@ import { SearchCompanyDto } from 'companies/dto/search-company.dto';
 import { ImageCredentialsResponse } from 'companies/dto/image-credentials.response';
 import { Company } from 'entities';
 import { UpdateCompanyDto } from 'companies/dto/update-company.dto';
-import { SingleCompanyResponse } from 'companies/dto/single-company.response';
-import { ImagesService } from 'images/images.service';
 
 @Controller('companies')
 @ApiTags('Companies')
 export class CompaniesController {
-  constructor(
-    private readonly companiesService: CompaniesService,
-    private readonly imagesService: ImagesService,
-  ) {}
+  constructor(private readonly companiesService: CompaniesService) {}
 
   @Get()
-  getCompanies(@Query() query: SearchCompanyDto): Promise<Company[]> {
-    return this.companiesService.findManyByQuery(query.query);
+  async getCompanies(@Query() query: SearchCompanyDto) {
+    const companies = await this.companiesService.findManyByQuery(query.query);
+
+    return Promise.all(
+      companies.map((c) => this.companiesService.resolveCompanyImages(c)),
+    );
   }
 
   @Post()
-  createCompany(@Body() data: CreateCompanyDto): Promise<Company> {
-    return this.companiesService.createOne(data);
+  async createCompany(@Body() data: CreateCompanyDto): Promise<Company> {
+    const createdCompany = await this.companiesService.createOne(data);
+    return this.companiesService.resolveCompanyImages(createdCompany);
   }
 
   @Get('/:soulId')
   async getCompany(@Param('soulId') soulId: string) {
     const company = await this.companiesService.findOne({ soulId });
-    return this.mapCompanyForSingle(company);
+    return this.companiesService.resolveCompanyImages(company);
   }
 
   @Patch('/:soulId')
-  updateCompany(
+  async updateCompany(
     @Param('soulId') soulId: string,
     @Body() data: UpdateCompanyDto,
   ): Promise<Company> {
-    return this.companiesService.updateOne({ soulId }, data);
+    const company = await this.companiesService.updateOne({ soulId }, data);
+
+    return this.companiesService.resolveCompanyImages(company);
   }
 
   @Post('/:soulId/image-credentials')
@@ -56,23 +58,5 @@ export class CompaniesController {
     @Body() data: GenerateImageCredentialsDto,
   ): Promise<ImageCredentialsResponse> {
     return this.companiesService.generateImageCredentials({ soulId }, data);
-  }
-
-  private async mapCompanyForSingle(
-    company: Company,
-  ): Promise<SingleCompanyResponse> {
-    return {
-      name: company.name,
-      description: company.description,
-      soulId: company.soulId,
-      links: company?.links?.map((l) => ({ type: l.type, url: l.url })),
-      joinDate: company.createdAt,
-      backgroundImage: await this.imagesService.getImageUrl(
-        company.backgroundImage,
-      ),
-      logoImage: await this.imagesService.getImageUrl(company.logoImage),
-      categories: company?.categories?.map((c) => ({ id: c.id, name: c.name })),
-      address: company.address,
-    };
   }
 }

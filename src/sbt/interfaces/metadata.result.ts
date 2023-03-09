@@ -1,15 +1,23 @@
-export interface MetadataResult {
-  metadataObjects: {
+export interface MetadataCompanyResult {
+  id: string;
+  address: string;
+}
+
+export interface MetadataObject {
+  id: string;
+  sbtId: string;
+  digiProofType: {
     id: string;
-    sbtId: string;
-    digiProofType: {
-      id: string;
-    };
-    description: string;
-    uri: string;
-    companies: {
-      id: string;
-      address: string;
-    }[];
-  }[];
+  };
+  description: string;
+  uri: string;
+  companies: MetadataCompanyResult[];
+}
+
+export interface MetadataResult {
+  metadataObjects: MetadataObject[];
+}
+
+export interface MetadataSingleResult {
+  metadataObject: MetadataObject;
 }

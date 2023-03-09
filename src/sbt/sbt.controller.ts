@@ -1,7 +1,14 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { SbtService } from './sbt.service';
 import { CompaniesService } from 'companies/companies.service';
 import { ApiTags } from '@nestjs/swagger';
+import { QueryParamsMetadataDto } from './dto/query-params-metadata.dto';
 
 @ApiTags('SBT')
 @Controller('sbt')
@@ -11,17 +18,28 @@ export class SbtController {
     private readonly companiesService: CompaniesService,
   ) {}
 
-  @Get('digi-proofs')
-  getDigiProofs() {
-    return this.sbtService.getDigiProofs();
+  @Get()
+  async getSbtList(@Query() query: QueryParamsMetadataDto) {
+    const company = await this.companiesService.findOne({
+      soulId: query.souldId,
+    });
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+    return this.sbtService.findMany(company, query.digiProof);
   }
 
-  @Get('metadata/:souldId/:digiProof')
-  async getMetadata(
-    @Param('souldId') soulId: string,
-    @Param('digiProof') digiProof: string,
+  @Get('/:sbtId')
+  async getSbt(
+    @Query() query: QueryParamsMetadataDto,
+    @Param('sbtId') sbtId: string,
   ) {
-    const company = await this.companiesService.findOne({ soulId });
-    return this.sbtService.enrichCompanyWithMetadata(company, digiProof);
+    const company = await this.companiesService.findOne({
+      soulId: query.souldId,
+    });
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+    return this.sbtService.findOne(sbtId, company);
   }
 }

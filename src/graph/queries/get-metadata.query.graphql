@@ -1,0 +1,17 @@
+query GetCompaniesMetadata($id: Bytes) {
+    metadataObject(
+        id: $id
+    ) {
+        id
+        sbtId
+        digiProofType {
+            id
+        }
+        description
+        uri
+        companies {
+            id
+            address
+        }
+    }
+}

@@ -61,6 +61,12 @@
       ],
       "images/*": [
         "src/images/*"
+      ],
+      "entities": [
+        "src/entities"
+      ],
+      "entities/*": [
+        "src/entities/*"
       ]
     }
   }

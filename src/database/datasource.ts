@@ -4,8 +4,7 @@ import * as pg from 'pg';
 import { parse } from 'pg-connection-string';
 
 import { ConfigService } from '@common/config';
-import { DataSource } from 'typeorm';
-import { DataSourceOptions } from 'typeorm/data-source/DataSourceOptions';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { ConfigSchema } from '../config/config.schema';
 
 const configService = new ConfigService<ConfigSchema>(ConfigSchema);
@@ -21,7 +20,7 @@ export const dbConfig: DataSourceOptions = {
   synchronize: false,
   entities: [
     resolve(__dirname, './../**/*.entity{.ts,.js}'),
-    resolve(__dirname, './../**/*.model{.ts,.js}'),
+    // resolve(__dirname, './../**/*.entity{.ts,.js}'),
   ],
   migrations: [resolve(__dirname, './migrations/**/*{.ts,.js}')],
   migrationsTableName: 'migrations',

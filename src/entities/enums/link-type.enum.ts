@@ -4,4 +4,5 @@ export enum LinkType {
   LINKEDIN = 'linkedin',
   DISCORD = 'discord',
   SITE = 'site',
+  INSTAGRAM = 'instagram',
 }

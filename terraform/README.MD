@@ -7,6 +7,6 @@
 
 
 ## Usage
-To upload the latest tfvars use `bash upload-tfvars.sh`
-To download the latest tfvars use `bash download-tfvars.sh`
-to apply use `terraform apply`
+- To upload the latest tfvars use `bash upload-tfvars.sh`
+- To download the latest tfvars use `bash download-tfvars.sh`
+- To apply use `terraform apply`

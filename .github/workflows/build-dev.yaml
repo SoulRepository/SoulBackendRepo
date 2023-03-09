@@ -1,0 +1,43 @@
+name: DEVELOPMENT
+
+
+on:
+  push:
+    branches: [development]
+  pull_request:
+    types: [closed]
+    branches: [development]
+  workflow_dispatch:
+  
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: false
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: development
+      - name: build docker image
+        run: |
+          export name=$(echo ${GITHUB_REPOSITORY#*/}"-development" | tr '[:upper:]' '[:lower:]')
+          export key="web-toshi-site"
+          export timestamp=$(date +%s)
+          export host=${{secrets.HOST}}
+          docker build . -t ${name}-${timestamp}
+          docker save -o ${name}-${timestamp}.tar ${name}-${timestamp}
+          echo "${{secrets.SSH_PRIV}}" > ${key}
+          sudo chmod 600 ${key}
+          
+          echo "name=${name}" >> development.txt
+          echo "key1=${key}" >> development.txt
+          echo "timestamp=${timestamp}" >> dev.txt
+          echo "name=${name}" >> development.txt
+          echo "key2=${key}" >> development.txt
+          echo "HOST=${host}" >> development.txt
+          scp -i ${key} -o "StrictHostKeyChecking no" development.txt ${host}:/home/ubuntu/development.txt
+          
+          scp -i ${key} -o "StrictHostKeyChecking no" ${name}-${timestamp}.tar ${host}:${name}-${timestamp}.tar
+          ssh -i ${key} -o "StrictHostKeyChecking no" ${host} 'sudo docker load -i '${name}'-'${timestamp}'.tar; sudo docker stop '${name}' || true; sudo docker run -d  --restart always -p 4445:3000 --name '${name}'-new '${name}'-'${timestamp}'; sudo docker rm '${name}' || true; sudo docker rmi $(sudo docker images -q) || true; sudo docker rename '${name}'-new '${name}'; rm '${name}'-'${timestamp}'.tar'

@@ -22,7 +22,8 @@ export class ImagesService {
     private readonly configService: ConfigService<ConfigSchema>,
     @InjectRepository(Image)
     private readonly imageRepository: Repository<Image>,
-  ) {}
+  ) {
+  }
 
   findOneByKey(key: string) {
     return this.imageRepository.findOne({
@@ -100,6 +101,7 @@ export class ImagesService {
           0,
           this.configService.get<number>('IMAGES_S3_LIMIT'),
         ],
+        ['starts-with', '$Content-Type', ''],
       ],
     });
   }

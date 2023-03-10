@@ -27,6 +27,7 @@ jobs:
           envkey_SUBGRAPH_URL: https://api.thegraph.com/subgraphs/name/nazar-blaize/soul-search-3
           envkey_IMAGES_S3_BUCKET: soulsearch
           envkey_IMAGES_S3_REGION: eu-central-1
+          envkey_NODE_TLS_REJECT_UNAUTHORIZED: 0
           file_name: dev.env
       - name: build docker image
         run: |

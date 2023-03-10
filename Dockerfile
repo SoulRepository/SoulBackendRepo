@@ -62,6 +62,7 @@ WORKDIR /usr/src/app
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 COPY --chown=node:node --from=build /usr/src/app/package.json ./package.json
+COPY --chown=node:node --from=build /usr/src/app/src/graph/queries ./src/graph/queries
 # COPY --chown=node:node --from=build /usr/src/app/db ./db
 # COPY --chown=node:node --from=build /usr/src/app/scripts ./scripts
 

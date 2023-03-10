@@ -9,6 +9,7 @@ import { SbtService } from './sbt.service';
 import { CompaniesService } from 'companies/companies.service';
 import { ApiTags } from '@nestjs/swagger';
 import { QueryParamsMetadataDto } from './dto/query-params-metadata.dto';
+import { QueryParamsMetadataOneDto } from './dto/query-params-metadata-one.dto';
 
 @ApiTags('SBT')
 @Controller('sbt')
@@ -31,7 +32,7 @@ export class SbtController {
 
   @Get('/:sbtId')
   async getSbt(
-    @Query() query: QueryParamsMetadataDto,
+    @Query() query: QueryParamsMetadataOneDto,
     @Param('sbtId') sbtId: string,
   ) {
     const company = await this.companiesService.findOne({

@@ -2,6 +2,7 @@ import 'dotenv/config';
 
 import { Client } from 'pg';
 import { parse } from 'pg-connection-string';
+import * as process from 'process';
 
 export async function createDatabase() {
   if (!process.env.DATABASE_URL) {

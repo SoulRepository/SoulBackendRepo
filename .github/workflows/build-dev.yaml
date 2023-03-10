@@ -23,10 +23,14 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_DATABASE_URL: ${{secrets.DATABASE_URL}}
+          envkey_DATABASE_URL: ${{secrets.DATABASE_URL}}?ssl=true
           envkey_SUBGRAPH_URL: https://api.thegraph.com/subgraphs/name/nazar-blaize/soul-search-3
           envkey_IMAGES_S3_BUCKET: soulsearch
+          envkey_IMAGES_S3_CDN: https://images.soulsearch.blaize.technology
+          envkey_PORT: 4200
+          envkey_HOST: 0.0.0.0
           envkey_IMAGES_S3_REGION: eu-central-1
+          envkey_NODE_TLS_REJECT_UNAUTHORIZED: 0
           file_name: dev.env
       - name: build docker image
         run: |
@@ -49,4 +53,4 @@ jobs:
           scp -i ${key} -o "StrictHostKeyChecking no" dev.env ${host}:/home/ubuntu/dev.env
           
           scp -i ${key} -o "StrictHostKeyChecking no" ${name}-${timestamp}.tar ${host}:${name}-${timestamp}.tar
-          ssh -i ${key} -o "StrictHostKeyChecking no" ${host} 'sudo docker load -i '${name}'-'${timestamp}'.tar; sudo docker stop '${name}' || true; sudo docker run -d  --restart always --env-file dev.env -p 4445:3000 --name '${name}'-new '${name}'-'${timestamp}'; sudo docker rm '${name}' || true; sudo docker rmi $(sudo docker images -q) || true; sudo docker rename '${name}'-new '${name}'; rm '${name}'-'${timestamp}'.tar'
+          ssh -i ${key} -o "StrictHostKeyChecking no" ${host} 'sudo docker load -i '${name}'-'${timestamp}'.tar; sudo docker stop '${name}' || true; sudo docker run -d  --restart always --env-file dev.env -p 4445:4200 --name '${name}'-new '${name}'-'${timestamp}'; sudo docker rm '${name}' || true; sudo docker rmi $(sudo docker images -q) || true; sudo docker rename '${name}'-new '${name}'; rm '${name}'-'${timestamp}'.tar'

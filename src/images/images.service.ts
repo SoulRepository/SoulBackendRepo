@@ -71,6 +71,10 @@ export class ImagesService {
     if (!image) {
       return;
     }
+    const cdnUrl = this.configService.get('IMAGES_S3_CDN');
+    if (cdnUrl) {
+      return `${cdnUrl}/${image.key}`;
+    }
     const cmd = new GetObjectCommand({
       Bucket: this.configService.get('IMAGES_S3_BUCKET'),
       Key: image.key,

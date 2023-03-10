@@ -37,6 +37,10 @@ export class ConfigSchema {
   IMAGES_S3_REGION?: string;
 
   @IsString()
+  @IsOptional()
+  IMAGES_S3_CDN?: string;
+
+  @IsString()
   IMAGES_S3_BUCKET: string;
 
   @IsNumber()

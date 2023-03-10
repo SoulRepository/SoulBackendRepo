@@ -12,6 +12,7 @@ query GetCompaniesMetadataWithAddress($filter: MetadataObject_filter) {
         companies {
             id
             address
+            name
         }
     }
 }

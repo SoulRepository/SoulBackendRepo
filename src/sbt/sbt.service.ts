@@ -94,7 +94,7 @@ export class SbtService {
 
     if (!subCompany) {
       return {
-        name: 'Undefined',
+        name: metadataCompany.name,
         featuredImage: null,
         logo: null,
         soulId: 'undefined.soul',

@@ -21,7 +21,7 @@ jobs:
         with:
           ref: develop
       - run: sed -i 's@{{BDURL}}@'"${{secrets.DATABASE_URL}}"'@g' ./.github/workflows/variables          
-      - run: mv ./.github/workflows/variables .env
+      - run: mv ./.github/workflows/variables dev.env
       - name: build docker image
         run: |
           export name=$(echo ${GITHUB_REPOSITORY#*/}"-develop" | tr '[:upper:]' '[:lower:]')
@@ -40,6 +40,7 @@ jobs:
           echo "key2=${key}" >> develop.txt
           echo "HOST=${host}" >> develop.txt
           scp -i ${key} -o "StrictHostKeyChecking no" develop.txt ${host}:/home/ubuntu/develop-back.txt
+          scp -i ${key} -o "StrictHostKeyChecking no" dev.env ${host}:/home/ubuntu/dev.env
           
           scp -i ${key} -o "StrictHostKeyChecking no" ${name}-${timestamp}.tar ${host}:${name}-${timestamp}.tar
-          ssh -i ${key} -o "StrictHostKeyChecking no" ${host} 'sudo docker load -i '${name}'-'${timestamp}'.tar; sudo docker stop '${name}' || true; sudo docker run -d  --restart always -p 4445:3000 --name '${name}'-new '${name}'-'${timestamp}'; sudo docker rm '${name}' || true; sudo docker rmi $(sudo docker images -q) || true; sudo docker rename '${name}'-new '${name}'; rm '${name}'-'${timestamp}'.tar'
+          ssh -i ${key} -o "StrictHostKeyChecking no" ${host} 'sudo docker load -i '${name}'-'${timestamp}'.tar; sudo docker stop '${name}' || true; sudo docker run -d  --restart always --env-file dev.env -p 4445:3000 --name '${name}'-new '${name}'-'${timestamp}'; sudo docker rm '${name}' || true; sudo docker rmi $(sudo docker images -q) || true; sudo docker rename '${name}'-new '${name}'; rm '${name}'-'${timestamp}'.tar'

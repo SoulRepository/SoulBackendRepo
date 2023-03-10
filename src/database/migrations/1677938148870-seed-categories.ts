@@ -29,12 +29,13 @@ export const categoriesData = [
 
 export class seedCategories1677938148870 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.connection
-      .createQueryBuilder()
-      .insert()
-      .into(Category)
-      .values(categoriesData.map((name) => ({ name })))
-      .execute();
+    // TODO: for test ci only
+    // await queryRunner.connection
+    //   .createQueryBuilder()
+    //   .insert()
+    //   .into(Category)
+    //   .values(categoriesData.map((name) => ({ name })))
+    //   .execute();
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {}

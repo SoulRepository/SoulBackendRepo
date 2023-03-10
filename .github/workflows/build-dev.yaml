@@ -24,6 +24,9 @@ jobs:
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DATABASE_URL: ${{secrets.DATABASE_URL}}
+          envkey_SUBGRAPH_URL: https://api.thegraph.com/subgraphs/name/nazar-blaize/soul-search-3
+          envkey_IMAGES_S3_BUCKET: soulsearch
+          envkey_IMAGES_S3_REGION: eu-central-1
           file_name: dev.env
       - name: build docker image
         run: |

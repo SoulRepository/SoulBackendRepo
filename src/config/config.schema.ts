@@ -23,18 +23,23 @@ export class ConfigSchema {
   DATABASE_URL: string;
 
   @IsString()
-  IMAGES_S3_ACCESS_KEY: string;
+  @IsOptional()
+  IMAGES_S3_ACCESS_KEY?: string;
 
   @IsString()
-  IMAGES_S3_SECRET_KEY: string;
+  @IsOptional()
+  IMAGES_S3_SECRET_KEY?: string;
 
   @IsString()
   @IsOptional()
   IMAGES_S3_ENDPOINT?: string;
 
   @IsString()
+  IMAGES_S3_REGION = 'us-east-1';
+
+  @IsString()
   @IsOptional()
-  IMAGES_S3_REGION?: string;
+  IMAGES_S3_CDN?: string;
 
   @IsString()
   IMAGES_S3_BUCKET: string;

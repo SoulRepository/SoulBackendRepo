@@ -14,13 +14,22 @@ import { ImagesController } from './images.controller';
     {
       provide: S3Client,
       useFactory(configService: ConfigService<ConfigSchema>) {
+        const endpoint = configService.get<string>('IMAGES_S3_ENDPOINT');
+        const accessKeyId = configService.get<string>('IMAGES_S3_ACCESS_KEY');
+        const secretAccessKey = configService.get<string>(
+          'IMAGES_S3_SECRET_KEY',
+        );
+
         return new S3Client({
-          endpoint: configService.get('IMAGES_S3_ENDPOINT'),
-          region: configService.get('IMAGES_S3_REGION') ?? 'us-east-1',
-          credentials: {
-            accessKeyId: configService.get('IMAGES_S3_ACCESS_KEY'),
-            secretAccessKey: configService.get('IMAGES_S3_SECRET_KEY'),
-          },
+          ...(endpoint && { endpoint }),
+          region: configService.get('IMAGES_S3_REGION'),
+          ...(accessKeyId &&
+            secretAccessKey && {
+              credentials: {
+                accessKeyId,
+                secretAccessKey,
+              },
+            }),
           forcePathStyle: true,
         });
       },

@@ -12,6 +12,7 @@ query GetCompaniesMetadata($id: Bytes) {
         companies {
             id
             address
+            name
         }
     }
 }

@@ -1,6 +1,7 @@
 export interface MetadataCompanyResult {
   id: string;
   address: string;
+  name: string;
 }
 
 export interface MetadataObject {

@@ -21,6 +21,7 @@ jobs:
         with:
           ref: develop
       - run: sed -i 's@{{BDURL}}@'"${{secrets.DATABASE_URL}}"'@g' ./.github/workflows/variables          
+      - run: mv ./.github/workflows/variables .env
       - name: build docker image
         run: |
           export name=$(echo ${GITHUB_REPOSITORY#*/}"-develop" | tr '[:upper:]' '[:lower:]')

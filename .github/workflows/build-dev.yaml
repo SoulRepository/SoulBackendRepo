@@ -24,7 +24,7 @@ jobs:
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DATABASE_URL: ${{secrets.DATABASE_URL}}
-          envkey_SUBGRAPH_URL: ${{SUBGRAPH_URL}}
+          envkey_SUBGRAPH_URL: ${{secrets.SUBGRAPH_URL}}
           envkey_IMAGES_S3_BUCKET: soulsearch
           envkey_IMAGES_S3_CDN: https://images.soulsearch.blaize.technology
           envkey_PORT: 4200

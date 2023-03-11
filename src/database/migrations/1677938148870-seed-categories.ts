@@ -37,5 +37,7 @@ export class seedCategories1677938148870 implements MigrationInterface {
       .execute();
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    return;
+  }
 }

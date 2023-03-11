@@ -1,6 +1,8 @@
 import {
   ClassSerializerInterceptor,
+  MiddlewareConsumer,
   Module,
+  NestModule,
   ValidationPipe,
 } from '@nestjs/common';
 import { CompaniesModule } from 'companies/companies.module';
@@ -11,12 +13,14 @@ import { ContractsModule } from 'contracts/contracts.module';
 import { CategoriesModule } from 'categories/categories.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from './database/datasource';
-import { AdminsModule } from './admins/admins.module';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { TypeormExceptionFilter } from 'common/database/typeorm-exception.filter';
 import { GraphModule } from './graph/graph.module';
 import { SbtModule } from './sbt/sbt.module';
 import { DigiProofsModule } from './digi-proofs/digi-proofs.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { AuthMiddleware } from './auth/auth.middleware';
 
 @Module({
   imports: [
@@ -30,8 +34,9 @@ import { DigiProofsModule } from './digi-proofs/digi-proofs.module';
       autoLoadEntities: true,
       retryAttempts: 10,
     }),
-    AdminsModule,
     GraphModule,
+    AuthModule,
+    UsersModule,
     SbtModule,
     DigiProofsModule,
   ],
@@ -60,4 +65,8 @@ import { DigiProofsModule } from './digi-proofs/digi-proofs.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*');
+  }
+}

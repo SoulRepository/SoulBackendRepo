@@ -50,4 +50,18 @@ export class ConfigSchema {
 
   @IsString()
   SUBGRAPH_URL: string;
+
+  @IsNumber()
+  @Type(() => Number)
+  PASSWORD_SALT_ROUNDS = 10;
+
+  @IsString()
+  DEFAULT_ADMIN_PASSWORD = 'admin123';
+
+  @IsString()
+  JWT_SECRET = 'secret';
+
+  @IsNumber()
+  @Type(() => Number)
+  JWT_EXPIRE_SECONDS = 60 * 60 * 24 * 30;
 }

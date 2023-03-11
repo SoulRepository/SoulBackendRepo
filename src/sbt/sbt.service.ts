@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { GraphService } from '../graph/graph.service';
-import { DigiProofResult } from '../digi-proofs/interfaces/digi-proof.result';
 import { Company } from 'entities';
 import {
   MetadataCompanyResult,
@@ -10,7 +9,6 @@ import {
 } from './interfaces/metadata.result';
 import { CompaniesService } from 'companies/companies.service';
 import { ImagesService } from 'images/images.service';
-import { DigiProofListResponse } from '../digi-proofs/dto/digi-proof-list.response';
 import {
   SbtItemCompanyResponse,
   SbtItemResponse,
@@ -23,15 +21,6 @@ export class SbtService {
     private readonly companiesService: CompaniesService,
     private readonly imagesService: ImagesService,
   ) {}
-
-  async getDigiProofs(): Promise<DigiProofListResponse[]> {
-    const { data } = await this.graphService.sendQuery<DigiProofResult>(
-      'get-digi-proofs',
-    );
-    return data.digiProofTypes.map((d) => ({
-      name: d.id,
-    }));
-  }
 
   async findMany(
     company: Company,

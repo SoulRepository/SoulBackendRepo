@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 import { TokenResponse } from './interfaces';
 import { LoginDto } from './dto';
 
-@ApiTags('Auth')
+@ApiTags('AdminAuth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

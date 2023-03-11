@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { HttpRequest } from 'common/interfaces';
 import { IS_ONLY_FOR_ADMIN } from '../decorators';
-import { UserRole } from 'entities';
+import { IS_VERIFY_SIGN } from '../decorators/verify-sign.decorator';
 
 @Injectable()
 export class AccessGuard implements CanActivate {
@@ -21,17 +21,23 @@ export class AccessGuard implements CanActivate {
       context.getHandler(),
     );
 
+    const needVerifySign = this.reflector.get<boolean>(
+      IS_VERIFY_SIGN,
+      context.getHandler(),
+    );
+
     const request = context.switchToHttp().getRequest<HttpRequest>();
     if (!request) {
       return false;
     }
 
-    if (!request.user) {
-      return false;
+    if (needVerifySign && request.address) {
+      return true;
     }
 
-    const user = request.user;
-
-    return !(onlyForAdmin && user.role !== UserRole.admin);
+    if (onlyForAdmin && request.user) {
+      return true;
+    }
+    return false;
   }
 }

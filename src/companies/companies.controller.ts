@@ -12,7 +12,7 @@ import {
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';
 import { CompaniesService } from 'companies/companies.service';
 import { GenerateImageCredentialsDto } from 'companies/dto/generate-image-credentials.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SearchCompanyDto } from 'companies/dto/search-company.dto';
 import { ImageCredentialsResponse } from 'companies/dto/image-credentials.response';
 import { Company } from 'entities';
@@ -37,6 +37,7 @@ export class CompaniesController {
 
   @Post()
   @OnlyForAdmin()
+  @ApiBearerAuth()
   async createCompany(@Body() data: CreateCompanyDto): Promise<Company> {
     const createdCompany = await this.companiesService.createOne(data);
     return this.companiesService.resolveCompanyImages(createdCompany);
@@ -51,6 +52,7 @@ export class CompaniesController {
   @Patch('/:soulId')
   @VerifySign()
   @OnlyForAdmin()
+  @ApiBearerAuth()
   async updateCompany(
     @Param('soulId') soulId: string,
     @Body() data: UpdateCompanyDto,
@@ -72,7 +74,6 @@ export class CompaniesController {
   }
 
   @Post('/:soulId/image-credentials')
-  @OnlyForAdmin()
   getImageCredentials(
     @Param('soulId') soulId: string,
     @Body() data: GenerateImageCredentialsDto,

@@ -31,13 +31,13 @@ export class AccessGuard implements CanActivate {
       return false;
     }
 
-    if (needVerifySign && request.address) {
-      return true;
-    }
+    if (needVerifySign || onlyForAdmin) {
+      if (needVerifySign && request.address) {
+        return true;
+      }
 
-    if (onlyForAdmin && request.user) {
-      return true;
+      return !!(onlyForAdmin && request.user);
     }
-    return false;
+    return true;
   }
 }

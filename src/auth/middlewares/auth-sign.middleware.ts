@@ -9,7 +9,7 @@ import {
   SIGN_ADDRESS_HEADER,
   SIGN_HEADER,
   SIGN_MESSAGE_HEADER,
-} from './constants/sign.constants';
+} from '../constants/sign.constants';
 import { ethers } from 'ethers';
 
 @Injectable()

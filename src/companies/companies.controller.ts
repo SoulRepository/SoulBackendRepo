@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  Headers,
   Request,
 } from '@nestjs/common';
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';
@@ -20,6 +21,7 @@ import { UpdateCompanyDto } from 'companies/dto/update-company.dto';
 import { OnlyForAdmin } from '../auth/decorators';
 import { VerifySign } from '../auth/decorators/verify-sign.decorator';
 import { HttpRequest } from 'common/interfaces';
+import { AuthHeadersDto } from '../auth/dto';
 
 @Controller('companies')
 @ApiTags('Companies')
@@ -55,6 +57,7 @@ export class CompaniesController {
   @ApiBearerAuth()
   async updateCompany(
     @Param('soulId') soulId: string,
+    @Headers() authHeaders: AuthHeadersDto,
     @Body() data: UpdateCompanyDto,
     @Request() req: HttpRequest,
   ): Promise<Company> {

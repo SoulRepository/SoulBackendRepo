@@ -22,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AuthMiddleware } from './auth/middlewares/auth.middleware';
 import { AccessGuard } from './auth/guards/access.guard';
+import { AuthSignMiddleware } from './auth/middlewares/auth-sign.middleware';
 
 @Module({
   imports: [
@@ -73,5 +74,6 @@ import { AccessGuard } from './auth/guards/access.guard';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes('*');
+    consumer.apply(AuthSignMiddleware).forRoutes('*');
   }
 }

@@ -25,17 +25,17 @@ export class CreateCompanyDto {
   @IsString()
   soulId: string;
 
-  @IsString()
-  @IsOptional()
-  backgroundImageKey?: string;
-
-  @IsString()
-  @IsOptional()
-  logoImageKey?: string;
-
-  @IsString()
-  @IsOptional()
-  featuredImageKey?: string;
+  // @IsString()
+  // @IsOptional()
+  // backgroundImageKey?: string;
+  //
+  // @IsString()
+  // @IsOptional()
+  // logoImageKey?: string;
+  //
+  // @IsString()
+  // @IsOptional()
+  // featuredImageKey?: string;
 
   @IsNumber({}, { each: true })
   categoriesIds: number[];

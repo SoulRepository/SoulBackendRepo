@@ -11,6 +11,7 @@ import { FindUniqCompanyDto } from 'companies/dto/find-uniq-company.dto';
 import { MAX_SEARCH_LIMIT } from 'companies/constants/company-query.constants';
 import { UpdateCompanyDto } from 'companies/dto/update-company.dto';
 import { CompanyResolvedImagesDto } from 'companies/dto/company-resolved-images.dto';
+import { ImageType } from 'images/intefaces/image.types';
 
 @Injectable()
 export class CompaniesService {
@@ -23,23 +24,23 @@ export class CompaniesService {
 
   async createOne(data: CreateCompanyDto) {
     const {
-      backgroundImageKey,
-      logoImageKey,
-      featuredImageKey,
+      // backgroundImageKey,
+      // logoImageKey,
+      // featuredImageKey,
       categoriesIds,
       ...rest
     } = data;
-    const backgroundImage =
-      backgroundImageKey &&
-      (await this.imagesService.createImageFromKey(backgroundImageKey));
-
-    const logoImage =
-      logoImageKey &&
-      (await this.imagesService.createImageFromKey(logoImageKey));
-
-    const featuredImage =
-      featuredImageKey &&
-      (await this.imagesService.createImageFromKey(featuredImageKey));
+    // const backgroundImage =
+    //   backgroundImageKey &&
+    //   (await this.imagesService.createImageFromKey(backgroundImageKey));
+    //
+    // const logoImage =
+    //   logoImageKey &&
+    //   (await this.imagesService.createImageFromKey(logoImageKey));
+    //
+    // const featuredImage =
+    //   featuredImageKey &&
+    //   (await this.imagesService.createImageFromKey(featuredImageKey));
 
     const categories = await this.categoriesService.findByIds(categoriesIds);
     const notFoundCategories = categoriesIds.filter(
@@ -55,9 +56,9 @@ export class CompaniesService {
     const entity = this.companyRepository.create({
       ...rest,
       categories: categoriesIds.map((id) => ({ id: id })),
-      backgroundImage,
-      logoImage,
-      featuredImage,
+      // backgroundImage,
+      // logoImage,
+      // featuredImage,
     });
     const saved = await this.companyRepository.save(entity);
     return this.findOne({ id: saved.id });
@@ -146,7 +147,12 @@ export class CompaniesService {
     data: GenerateImageCredentialsDto,
   ): Promise<ImageCredentialsResponse> {
     const existCompany = await this.findOne(where);
-    const companyId = existCompany ? existCompany.id : -1;
+    if (!existCompany) {
+      throw new NotFoundException(
+        'Company not found, create company before upload image',
+      );
+    }
+    const { id: companyId } = existCompany;
     return {
       background:
         data.forBackground &&

@@ -5,12 +5,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { HttpRequest, HttpResponse } from 'common/interfaces';
-import {
-  SIGN_ADDRESS_HEADER,
-  SIGN_HEADER,
-  SIGN_MESSAGE_HEADER,
-} from '../constants/sign.constants';
 import { ethers } from 'ethers';
+import { plainToClass } from 'class-transformer';
+import { AuthHeadersDto } from '../dto';
 
 @Injectable()
 export class AuthSignMiddleware implements NestMiddleware {
@@ -19,10 +16,13 @@ export class AuthSignMiddleware implements NestMiddleware {
     res: HttpResponse,
     next: NextFunction,
   ): Promise<void> {
-    const sign = req.header(SIGN_HEADER);
-    const message = req.header(SIGN_MESSAGE_HEADER);
-    const address = req.header(SIGN_ADDRESS_HEADER);
-    if (sign && address) {
+    const values = plainToClass(AuthHeadersDto, req.headers, {
+      strategy: 'excludeAll',
+    });
+    const sign = values['x-web3-sign'];
+    const message = values['x-web3-message'];
+    const address = values['x-web3-address'];
+    if (sign && address && message) {
       const possibleAddress = ethers.verifyMessage(message, sign);
       if (possibleAddress !== address) {
         throw new UnauthorizedException('Incorrect sign');

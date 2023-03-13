@@ -41,8 +41,9 @@ export class CompaniesController {
   @OnlyForAdmin()
   @ApiBearerAuth()
   async createCompany(@Body() data: CreateCompanyDto): Promise<Company> {
-    const createdCompany = await this.companiesService.createOne(data);
-    return this.companiesService.resolveCompanyImages(createdCompany);
+    // const createdCompany = await this.companiesService.createOne(data);
+    // return this.companiesService.resolveCompanyImages(createdCompany);
+    return this.companiesService.createOne(data);
   }
 
   @Get('/:soulId')

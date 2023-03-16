@@ -54,13 +54,13 @@ export class SocialLinksService {
       refreshToken: authData.refreshToken,
       validUntil: authData.validUntil,
     });
-    const upsertResult = await this.companyLinkRepository.upsert(linkEntity, [
-      'company',
-      'type',
-    ]);
+    await this.companyLinkRepository.upsert(linkEntity, ['company', 'type']);
     return this.companyLinkRepository.findOne({
       where: {
-        id: upsertResult.raw.id,
+        company: {
+          id: company.id,
+        },
+        type,
       },
     });
   }

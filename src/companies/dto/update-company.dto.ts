@@ -17,7 +17,8 @@ export class UpdateCompanyDto {
   description?: string;
 
   @IsString()
-  soulId: string;
+  @IsOptional()
+  soulId?: string;
 
   @IsString()
   @IsOptional()

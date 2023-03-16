@@ -28,6 +28,8 @@ export class CompanyLink extends BaseEntityDate {
 
   @ManyToOne(() => Company, (company) => company.links, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    orphanedRowAction: 'delete',
   })
   company: Company;
 

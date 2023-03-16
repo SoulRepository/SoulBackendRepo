@@ -210,6 +210,9 @@ export class CompaniesService {
     company: Company,
     newLinks: CreateLinkDto[],
   ) {
+    if (!newLinks) {
+      return;
+    }
     const linksToUpdate = await this.companyLinkRepository.find({
       where: {
         company: {

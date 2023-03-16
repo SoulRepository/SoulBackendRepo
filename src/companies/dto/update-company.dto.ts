@@ -17,6 +17,9 @@ export class UpdateCompanyDto {
   description?: string;
 
   @IsString()
+  soulId: string;
+
+  @IsString()
   @IsOptional()
   backgroundImageKey?: string;
 

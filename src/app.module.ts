@@ -23,6 +23,7 @@ import { UsersModule } from './users/users.module';
 import { AuthMiddleware } from './auth/middlewares/auth.middleware';
 import { AccessGuard } from './auth/guards/access.guard';
 import { AuthSignMiddleware } from './auth/middlewares/auth-sign.middleware';
+import { SocialLinksModule } from './social-links/social-links.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { AuthSignMiddleware } from './auth/middlewares/auth-sign.middleware';
     UsersModule,
     SbtModule,
     DigiProofsModule,
+    SocialLinksModule,
   ],
   providers: [
     {

@@ -62,26 +62,54 @@ export class CompaniesController {
     @Body() data: UpdateCompanyDto,
     @Request() req: HttpRequest,
   ): Promise<Company> {
-    if (req.address) {
-      const companyToCheckAddress = await this.companiesService.findOne({
-        soulId,
-      });
-      if (companyToCheckAddress.address !== req.address) {
-        throw new ForbiddenException(
-          'You not allowed to update not yours company',
-        );
-      }
-    }
+    await this.ensureAddressRelatedToCompany(req, soulId);
     const company = await this.companiesService.updateOne({ soulId }, data);
-
     return this.companiesService.resolveCompanyImages(company);
   }
 
   @Post('/:soulId/image-credentials')
-  getImageCredentials(
+  @VerifySign()
+  @OnlyForAdmin()
+  @ApiBearerAuth()
+  async getImageCredentials(
     @Param('soulId') soulId: string,
     @Body() data: GenerateImageCredentialsDto,
+    @Headers() authHeaders: AuthHeadersDto,
+    @Request() req: HttpRequest,
   ): Promise<ImageCredentialsResponse> {
+    await this.ensureAddressRelatedToCompany(req, soulId);
     return this.companiesService.generateImageCredentials({ soulId }, data);
+  }
+
+  @Patch('/:soulId/social-verify')
+  @VerifySign()
+  @OnlyForAdmin()
+  @ApiBearerAuth()
+  async verifySocialNetwork(
+    @Param('soulId') soulId: string,
+    @Body() data: GenerateImageCredentialsDto,
+    @Headers() authHeaders: AuthHeadersDto,
+    @Request() req: HttpRequest,
+  ): Promise<ImageCredentialsResponse> {
+    await this.ensureAddressRelatedToCompany(req, soulId);
+    return this.companiesService.generateImageCredentials({ soulId }, data);
+  }
+
+  private async ensureAddressRelatedToCompany(
+    req: HttpRequest,
+    soulId: string,
+  ) {
+    if (!req.address) {
+      return;
+    }
+    const companyToCheckAddress = await this.companiesService.findOne({
+      soulId,
+    });
+
+    if (companyToCheckAddress.address === req.address) {
+      return;
+    }
+
+    throw new ForbiddenException('You not allowed to update not yours company');
   }
 }

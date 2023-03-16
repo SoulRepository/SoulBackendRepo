@@ -11,7 +11,6 @@ import { FindUniqCompanyDto } from 'companies/dto/find-uniq-company.dto';
 import { MAX_SEARCH_LIMIT } from 'companies/constants/company-query.constants';
 import { UpdateCompanyDto } from 'companies/dto/update-company.dto';
 import { CompanyResolvedImagesDto } from 'companies/dto/company-resolved-images.dto';
-import { ImageType } from 'images/intefaces/image.types';
 
 @Injectable()
 export class CompaniesService {

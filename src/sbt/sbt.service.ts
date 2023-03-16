@@ -88,6 +88,7 @@ export class SbtService {
         logo: null,
         soulId: 'undefined.soul',
         address: metadataCompany.address,
+        verified: false,
       };
     }
 
@@ -100,6 +101,7 @@ export class SbtService {
         (await this.imagesService.getImageUrl(subCompany.logoImage)) ?? null,
       soulId: subCompany.soulId,
       address: metadataCompany.address,
+      verified: subCompany.links.some((l) => l.verified),
     };
   }
 }

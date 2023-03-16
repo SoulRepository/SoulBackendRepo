@@ -81,20 +81,6 @@ export class CompaniesController {
     return this.companiesService.generateImageCredentials({ soulId }, data);
   }
 
-  @Patch('/:soulId/social-verify')
-  @VerifySign()
-  @OnlyForAdmin()
-  @ApiBearerAuth()
-  async verifySocialNetwork(
-    @Param('soulId') soulId: string,
-    @Body() data: GenerateImageCredentialsDto,
-    @Headers() authHeaders: AuthHeadersDto,
-    @Request() req: HttpRequest,
-  ): Promise<ImageCredentialsResponse> {
-    await this.ensureAddressRelatedToCompany(req, soulId);
-    return this.companiesService.generateImageCredentials({ soulId }, data);
-  }
-
   private async ensureAddressRelatedToCompany(
     req: HttpRequest,
     soulId: string,

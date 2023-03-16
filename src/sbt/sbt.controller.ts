@@ -27,7 +27,10 @@ export class SbtController {
     if (!company) {
       throw new NotFoundException('Company not found');
     }
-    return this.sbtService.findMany(company, query.digiProof);
+    return this.sbtService.findMany(company, {
+      digiProofType: query.digiProof,
+      limit: query.limit,
+    });
   }
 
   @Get('/:sbtId')

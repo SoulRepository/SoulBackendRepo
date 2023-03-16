@@ -13,6 +13,7 @@ import {
   SbtItemCompanyResponse,
   SbtItemResponse,
 } from './dto/sbt-item.response';
+import { FindManyFilterInterface } from './interfaces/find-many-filter.interface';
 
 @Injectable()
 export class SbtService {
@@ -24,17 +25,18 @@ export class SbtService {
 
   async findMany(
     company: Company,
-    digiProofTypeFilter?: string,
+    filter: FindManyFilterInterface,
   ): Promise<SbtItemResponse[]> {
     const { data } = await this.graphService.sendQuery<MetadataResult>(
       'get-metadata-by-address',
       {
         filter: {
           companies_: { address: company.address },
-          ...(digiProofTypeFilter && {
-            digiProofType_: { id: digiProofTypeFilter },
+          ...(filter.digiProofType && {
+            digiProofType_: { id: filter.digiProofType },
           }),
         },
+        limit: filter?.limit ?? 100,
       },
     );
 

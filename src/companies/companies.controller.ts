@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  ForbiddenException,
   Get,
   Param,
   Patch,
@@ -62,7 +61,7 @@ export class CompaniesController {
     @Body() data: UpdateCompanyDto,
     @Request() req: HttpRequest,
   ): Promise<Company> {
-    await this.ensureAddressRelatedToCompany(req, soulId);
+    await this.companiesService.ensureAddressRelatedToCompany(req, soulId);
     const company = await this.companiesService.updateOne({ soulId }, data);
     return this.companiesService.resolveCompanyImages(company);
   }
@@ -77,25 +76,7 @@ export class CompaniesController {
     @Headers() authHeaders: AuthHeadersDto,
     @Request() req: HttpRequest,
   ): Promise<ImageCredentialsResponse> {
-    await this.ensureAddressRelatedToCompany(req, soulId);
+    await this.companiesService.ensureAddressRelatedToCompany(req, soulId);
     return this.companiesService.generateImageCredentials({ soulId }, data);
-  }
-
-  private async ensureAddressRelatedToCompany(
-    req: HttpRequest,
-    soulId: string,
-  ) {
-    if (!req.address) {
-      return;
-    }
-    const companyToCheckAddress = await this.companiesService.findOne({
-      soulId,
-    });
-
-    if (companyToCheckAddress.address === req.address) {
-      return;
-    }
-
-    throw new ForbiddenException('You not allowed to update not yours company');
   }
 }

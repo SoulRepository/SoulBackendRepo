@@ -2,16 +2,22 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   NotFoundException,
   Param,
   Post,
+  Request,
 } from '@nestjs/common';
 import { SocialLinksService } from './social-links.service';
 import { GetSocialAuthLinkResponse } from './dto/get-social-auth-link.response';
 import { GetSocialLinkParamsDto } from './dto/get-social-link-params.dto';
 import { ProcessCodeBodyDto } from './dto/process-code-body.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CompaniesService } from 'companies/companies.service';
+import { VerifySign } from '../auth/decorators/verify-sign.decorator';
+import { OnlyForAdmin } from '../auth/decorators';
+import { AuthHeadersDto } from '../auth/dto';
+import { HttpRequest } from 'common/interfaces';
 
 @Controller('social-links')
 @ApiTags('Social Links')
@@ -31,7 +37,15 @@ export class SocialLinksController {
   }
 
   @Post()
-  async processSocialLinkCode(@Body() data: ProcessCodeBodyDto) {
+  @VerifySign()
+  @OnlyForAdmin()
+  @ApiBearerAuth()
+  async processSocialLinkCode(
+    @Body() data: ProcessCodeBodyDto,
+    @Headers() authHeaders: AuthHeadersDto,
+    @Request() req: HttpRequest,
+  ) {
+    await this.companiesService.ensureAddressRelatedToCompany(req, data.soulId);
     const company = await this.companiesService.findOne({
       soulId: data.soulId,
     });

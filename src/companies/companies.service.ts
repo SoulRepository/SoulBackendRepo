@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Like, Repository, FindOptionsSelect, ILike, In } from 'typeorm';
 import { Company, CompanyLink } from 'entities';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +17,7 @@ import { UpdateCompanyDto } from 'companies/dto/update-company.dto';
 import { CompanyResolvedImagesDto } from 'companies/dto/company-resolved-images.dto';
 import { CreateLinkDto } from 'companies/dto/create-update-link.dto';
 import keyBy from 'lodash.keyby';
+import { HttpRequest } from 'common/interfaces';
 
 @Injectable()
 export class CompaniesService {
@@ -230,5 +235,20 @@ export class CompaniesService {
     }, mapExist);
 
     return Object.values(updated);
+  }
+
+  async ensureAddressRelatedToCompany(req: HttpRequest, soulId: string) {
+    if (!req.address) {
+      return;
+    }
+    const companyToCheckAddress = await this.findOne({
+      soulId,
+    });
+
+    if (companyToCheckAddress.address === req.address) {
+      return;
+    }
+
+    throw new ForbiddenException('You not allowed to update not yours company');
   }
 }

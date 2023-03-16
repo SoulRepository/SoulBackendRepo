@@ -13,9 +13,7 @@ import { DiscordProfileResponse } from './interfaces/discord-profile.response';
 export class DiscordProvider implements BaseProvider {
   private readonly redirectUrl;
   constructor(private readonly configService: ConfigService<ConfigSchema>) {
-    this.redirectUrl = `${this.configService.get(
-      'BASE_URL',
-    )}/api/social-links/discord/callback`;
+    this.redirectUrl = this.configService.get('FRONTEND_REDIRECT_URL');
   }
   getAuthLink(): string | Promise<string> {
     const query = {
@@ -24,6 +22,7 @@ export class DiscordProvider implements BaseProvider {
       scope: 'identify',
       redirect_uri: this.redirectUrl,
       prompt: 'consent',
+      state: '_discord',
     };
     return `https://discord.com/oauth2/authorize?${qs.stringify(query)}`;
   }

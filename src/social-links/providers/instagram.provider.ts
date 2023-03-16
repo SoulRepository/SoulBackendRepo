@@ -15,15 +15,14 @@ export class InstagramProvider implements BaseProvider {
   private readonly redirectUrl;
 
   constructor(private readonly configService: ConfigService<ConfigSchema>) {
-    this.redirectUrl = `${this.configService.get(
-      'BASE_URL',
-    )}/api/social-links/instagram/callback`;
+    this.redirectUrl = this.configService.get('FRONTEND_REDIRECT_URL');
   }
 
   getAuthLink(): string {
     const query = {
       response_type: 'code',
       redirect_uri: this.redirectUrl,
+      state: '_instagram',
       scope: 'user_profile',
       client_id: this.configService.get<string>('INSTAGRAM_CLIENT_ID'),
     };

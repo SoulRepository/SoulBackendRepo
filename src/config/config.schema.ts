@@ -23,7 +23,7 @@ export class ConfigSchema {
   DATABASE_URL: string;
 
   @IsString()
-  BASE_URL: string;
+  FRONTEND_REDIRECT_URL: string;
 
   @IsString()
   @IsOptional()

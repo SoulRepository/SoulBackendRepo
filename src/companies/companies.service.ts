@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Like, Repository, FindOptionsSelect, ILike } from 'typeorm';
-import { Company } from 'entities';
+import { Like, Repository, FindOptionsSelect, ILike, In } from 'typeorm';
+import { Company, CompanyLink } from 'entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';
 import { ImagesService } from 'images/images.service';
@@ -11,13 +11,16 @@ import { FindUniqCompanyDto } from 'companies/dto/find-uniq-company.dto';
 import { MAX_SEARCH_LIMIT } from 'companies/constants/company-query.constants';
 import { UpdateCompanyDto } from 'companies/dto/update-company.dto';
 import { CompanyResolvedImagesDto } from 'companies/dto/company-resolved-images.dto';
-import { ImageType } from 'images/intefaces/image.types';
+import { CreateLinkDto } from 'companies/dto/create-update-link.dto';
+import keyBy from 'lodash.keyby';
 
 @Injectable()
 export class CompaniesService {
   constructor(
     @InjectRepository(Company)
     private readonly companyRepository: Repository<Company>,
+    @InjectRepository(CompanyLink)
+    private readonly companyLinkRepository: Repository<CompanyLink>,
     private readonly imagesService: ImagesService,
     private readonly categoriesService: CategoriesService,
   ) {}
@@ -77,6 +80,7 @@ export class CompaniesService {
       logoImageKey,
       featuredImageKey,
       categoriesIds,
+      links,
       ...rest
     } = data;
     const backgroundImage =
@@ -97,20 +101,23 @@ export class CompaniesService {
       ? categoriesIds.filter((c) => !categories.some((p) => p.id === c))
       : [];
 
+    const linkToUpdate = await this.getLinksForCompany(existCompany, links);
+
     if (notFoundCategories.length) {
       throw new NotFoundException(
         `CategoryIds ${notFoundCategories.join(', ')} not found`,
       );
     }
 
-    const entity = this.companyRepository.merge(existCompany, {
+    const saved = await this.companyRepository.save({
+      id: existCompany.id,
       backgroundImage,
       logoImage,
       featuredImage,
       categories,
+      links: linkToUpdate,
       ...rest,
     });
-    const saved = await this.companyRepository.save(entity);
 
     return this.findOne({ id: saved.id });
   }
@@ -192,5 +199,36 @@ export class CompaniesService {
       backgroundImageUrl,
       featuredImageUrl,
     };
+  }
+
+  private async getLinksForCompany(
+    company: Company,
+    newLinks: CreateLinkDto[],
+  ) {
+    const linksToUpdate = await this.companyLinkRepository.find({
+      where: {
+        company: {
+          id: company.id,
+        },
+        type: In(newLinks.map((l) => l.type)),
+      },
+    });
+
+    const mapExist = keyBy(linksToUpdate, 'type');
+    const updated = newLinks.reduce((accum, l) => {
+      if (mapExist?.[l.type]?.verified) {
+        return accum;
+      }
+      return {
+        ...accum,
+        [l.type]: {
+          ...(mapExist?.[l.type] ?? {}),
+          type: l.type,
+          url: l.url,
+        },
+      };
+    }, mapExist);
+
+    return Object.values(updated);
   }
 }

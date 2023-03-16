@@ -23,6 +23,9 @@ export class ConfigSchema {
   DATABASE_URL: string;
 
   @IsString()
+  BASE_URL: string;
+
+  @IsString()
   @IsOptional()
   IMAGES_S3_ACCESS_KEY?: string;
 
@@ -64,4 +67,16 @@ export class ConfigSchema {
   @IsNumber()
   @Type(() => Number)
   JWT_EXPIRE_SECONDS = 60 * 60 * 24 * 30;
+
+  @IsString()
+  INSTAGRAM_CLIENT_ID: string;
+
+  @IsString()
+  INSTAGRAM_CLIENT_SECRET: string;
+
+  @IsString()
+  DISCORD_CLIENT_ID: string;
+
+  @IsString()
+  DISCORD_CLIENT_SECRET: string;
 }

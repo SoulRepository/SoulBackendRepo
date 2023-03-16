@@ -4,6 +4,7 @@ export class SbtItemCompanyResponse {
   logo: string;
   soulId: string;
   address: string;
+  verified: boolean;
 }
 
 export class SbtItemResponse {

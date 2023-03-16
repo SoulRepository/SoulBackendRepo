@@ -18,6 +18,10 @@ export class UpdateCompanyDto {
 
   @IsString()
   @IsOptional()
+  soulId?: string;
+
+  @IsString()
+  @IsOptional()
   backgroundImageKey?: string;
 
   @IsString()

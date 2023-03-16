@@ -5,6 +5,7 @@ import { ConfigSchema } from '../config/config.schema';
 import fs from 'node:fs/promises';
 import path from 'path';
 import { GraphqlResponse } from './intefaces/graphql.response';
+import { GraphError } from './errors/graph.error';
 
 @Injectable()
 export class GraphService implements OnModuleInit {
@@ -30,7 +31,7 @@ export class GraphService implements OnModuleInit {
       throw new Error('Not registered query');
     }
     const query = this.queries.get(name);
-    return this.client
+    const result = await this.client
       .post({
         json: {
           query,
@@ -38,14 +39,17 @@ export class GraphService implements OnModuleInit {
         },
       })
       .json<GraphqlResponse<R>>();
+
+    if (result.errors) {
+      throw new GraphError(result.errors);
+    }
+
+    return result;
   }
 
   async onModuleInit(): Promise<void> {
     await this.registerQuery('get-digi-proofs');
     await this.registerQuery('get-metadata-by-address');
     await this.registerQuery('get-metadata');
-    // this.sendQuery('get-metadata-by-address', {
-    //   address: '0x8f82ca16d4f47bcd1d24c9c93ce2b4e6f8390991',
-    // });
   }
 }

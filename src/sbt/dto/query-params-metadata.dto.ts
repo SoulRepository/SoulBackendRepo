@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class QueryParamsMetadataDto {
   @IsString()
@@ -7,4 +7,10 @@ export class QueryParamsMetadataDto {
 
   @IsString()
   souldId: string;
+
+  @IsNumber()
+  @IsOptional()
+  @Min(1)
+  @Max(100)
+  limit?: number;
 }

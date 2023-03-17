@@ -34,7 +34,7 @@ jobs:
           envkey_FRONTEND_REDIRECT_URL: https://frontend.dev.soulsearch.blaize.technology/auth
           envkey_INSTAGRAM_CLIENT_ID: '747939963573646'
           envkey_INSTAGRAM_CLIENT_SECRET: ${{secrets.INSTAGRAM_CLIENT_SECRET}}
-          envkey_DISCORD_CLIENT_ID: 1085477733561274408
+          envkey_DISCORD_CLIENT_ID: '1085477733561274408'
           envkey_DISCORD_CLIENT_SECRET: ${{secrets.DISCORD_CLIENT_SECRET}}
           file_name: dev.env
       - name: build docker image

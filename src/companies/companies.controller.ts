@@ -7,7 +7,7 @@ import {
   Post,
   Query,
   Headers,
-  Request,
+  Request, NotFoundException,
 } from '@nestjs/common';
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';
 import { CompaniesService } from 'companies/companies.service';
@@ -48,6 +48,9 @@ export class CompaniesController {
   @Get('/:soulId')
   async getCompany(@Param('soulId') soulId: string) {
     const company = await this.companiesService.findOne({ soulId });
+    if (!company) {
+      throw new NotFoundException(`Company ${soulId} not found`);
+    }
     return this.companiesService.resolveCompanyImages(company);
   }
 

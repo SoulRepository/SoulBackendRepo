@@ -248,7 +248,9 @@ export class CompaniesService {
       soulId,
     });
 
-    if (companyToCheckAddress.address === req.address) {
+    if (
+      companyToCheckAddress.address.toLowerCase() === req.address.toLowerCase()
+    ) {
       return;
     }
 

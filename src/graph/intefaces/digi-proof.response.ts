@@ -1,4 +1,4 @@
-export class DigiProofResult {
+export class DigiProofResponse {
   digiProofTypes: {
     id: string;
   }[];

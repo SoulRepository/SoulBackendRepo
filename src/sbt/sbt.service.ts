@@ -4,16 +4,14 @@ import { Company } from 'entities';
 import {
   MetadataCompanyResult,
   MetadataObject,
-  MetadataResult,
-  MetadataSingleResult,
-} from './interfaces/metadata.result';
+} from '../graph/intefaces/metadata.result';
 import { CompaniesService } from 'companies/companies.service';
 import { ImagesService } from 'images/images.service';
 import {
   SbtItemCompanyResponse,
   SbtItemResponse,
 } from './dto/sbt-item.response';
-import { FindManyFilterInterface } from './interfaces/find-many-filter.interface';
+import { FindManyFilterInterface } from '../graph/intefaces/find-many-filter.interface';
 
 @Injectable()
 export class SbtService {
@@ -27,18 +25,7 @@ export class SbtService {
     company: Company,
     filter: FindManyFilterInterface,
   ): Promise<SbtItemResponse[]> {
-    const { data } = await this.graphService.sendQuery<MetadataResult>(
-      'get-metadata-by-address',
-      {
-        filter: {
-          companies_: { address: company.address },
-          ...(filter.digiProofType && {
-            digiProofType_: { id: filter.digiProofType },
-          }),
-        },
-        limit: filter?.limit ?? 100,
-      },
-    );
+    const data = await this.graphService.getCompanies(filter);
 
     const sbtList = data.metadataObjects.map(async (sbt) =>
       this.mapSbt(company, sbt),
@@ -48,12 +35,7 @@ export class SbtService {
   }
 
   async findOne(sbtId: string, company: Company): Promise<SbtItemResponse> {
-    const { data } = await this.graphService.sendQuery<MetadataSingleResult>(
-      'get-metadata',
-      {
-        id: sbtId,
-      },
-    );
+    const data = await this.graphService.getCompany(sbtId);
     return this.mapSbt(company, data.metadataObject);
   }
 

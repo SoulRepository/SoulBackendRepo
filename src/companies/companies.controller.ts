@@ -7,7 +7,8 @@ import {
   Post,
   Query,
   Headers,
-  Request, NotFoundException,
+  Request,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';
 import { CompaniesService } from 'companies/companies.service';

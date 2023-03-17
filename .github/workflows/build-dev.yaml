@@ -37,6 +37,11 @@ jobs:
           envkey_DISCORD_CLIENT_ID: 1085477733561274408
           envkey_DISCORD_CLIENT_SECRET: ${{secrets.DISCORD_CLIENT_SECRET}}
           file_name: dev.env
+      - run: |
+          export key="ssh-priv-key"
+          export host=${{secrets.HOST}}
+          echo "${{secrets.SSH_PRIV}}" > ${key}
+          scp -i ${key} -o "StrictHostKeyChecking no" dev.env ${host}:/ubuntu/dev.env
       - name: build docker image
         run: |
           export name=$(echo ${GITHUB_REPOSITORY#*/}"-develop" | tr '[:upper:]' '[:lower:]')

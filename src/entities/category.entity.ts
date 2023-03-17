@@ -9,6 +9,9 @@ export class Category extends BaseEntityDate {
   @Column()
   name: string;
 
+  @Column({ nullable: true })
+  shortName?: string;
+
   @Column({
     nullable: true,
   })

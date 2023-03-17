@@ -13,6 +13,7 @@ export interface MetadataObject {
   description: string;
   uri: string;
   companies: MetadataCompanyResult[];
+  createdBlockTimestamp: string;
 }
 
 export interface MetadataResult {

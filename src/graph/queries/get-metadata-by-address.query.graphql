@@ -8,6 +8,7 @@ query GetCompaniesMetadataWithAddress($filter: MetadataObject_filter, $limit: In
         digiProofType {
             id
         }
+        createdBlockTimestamp,
         description
         uri
         companies {

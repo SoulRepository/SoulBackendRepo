@@ -8,6 +8,7 @@ query GetCompaniesMetadata($id: Bytes) {
             id
         }
         description
+        createdBlockTimestamp,
         uri
         companies {
             id

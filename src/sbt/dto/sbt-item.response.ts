@@ -13,4 +13,5 @@ export class SbtItemResponse {
   description: string;
   uri: string;
   companies: SbtItemCompanyResponse[];
+  createdAt: Date;
 }

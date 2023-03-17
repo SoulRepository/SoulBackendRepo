@@ -72,6 +72,7 @@ export class SbtService {
       digiProofType: metadata.digiProofType.id,
       description: metadata.description,
       uri: metadata.uri,
+      createdAt: new Date(Number(metadata.createdBlockTimestamp) * 1000),
       companies,
     };
   }

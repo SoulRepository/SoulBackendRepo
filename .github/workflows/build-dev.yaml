@@ -41,6 +41,7 @@ jobs:
           export key="ssh-priv-key"
           export host=${{secrets.HOST}}
           echo "${{secrets.SSH_PRIV}}" > ${key}
+          sudo chmod 600 ${key}
           scp -i ${key} -o "StrictHostKeyChecking no" dev.env ${host}:/ubuntu/dev.env
       - name: build docker image
         run: |

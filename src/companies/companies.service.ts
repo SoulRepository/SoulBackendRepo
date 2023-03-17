@@ -134,7 +134,8 @@ export class CompaniesService {
           address: query,
         },
         {
-          soulId: Like(`%${query}%`),
+          // soulId: Like(`%${query}%`),
+          soulId: query,
         },
       ],
       take: MAX_SEARCH_LIMIT,

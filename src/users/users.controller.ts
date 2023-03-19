@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateUpdateUserDto } from './dto/create-update-user.dto';
 import { UsersService } from './users.service';
-import { OnlyForAdmin } from '../auth/decorators';
+import { OnlyForAdmin } from 'auth/decorators';
 import { User } from 'entities';
 
 @ApiTags('Users')

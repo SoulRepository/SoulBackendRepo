@@ -1,4 +1,4 @@
-import { GraphqlErrorItem } from '../intefaces/graphql.response';
+import { GraphqlErrorItem } from '../intefaces';
 import { BadRequestException } from '@nestjs/common';
 
 export class GraphError extends BadRequestException {

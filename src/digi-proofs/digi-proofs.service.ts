@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { GraphService } from '../graph/graph.service';
+import { GraphService } from 'graph/graph.service';
 import { DigiProofListResponse } from './dto/digi-proof-list.response';
 
 @Injectable()

@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Like, Repository, FindOptionsSelect, ILike, In } from 'typeorm';
+import { Repository, FindOptionsSelect, ILike, In } from 'typeorm';
 import { Company, CompanyLink } from 'entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';

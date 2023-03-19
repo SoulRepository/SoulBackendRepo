@@ -15,15 +15,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from './database/datasource';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { TypeormExceptionFilter } from 'common/database/typeorm-exception.filter';
-import { GraphModule } from './graph/graph.module';
-import { SbtModule } from './sbt/sbt.module';
-import { DigiProofsModule } from './digi-proofs/digi-proofs.module';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { AuthMiddleware } from './auth/middlewares/auth.middleware';
-import { AccessGuard } from './auth/guards/access.guard';
-import { AuthSignMiddleware } from './auth/middlewares/auth-sign.middleware';
-import { SocialLinksModule } from './social-links/social-links.module';
+import { GraphModule } from 'graph/graph.module';
+import { SbtModule } from 'sbt/sbt.module';
+import { DigiProofsModule } from 'digi-proofs/digi-proofs.module';
+import { AuthModule } from 'auth/auth.module';
+import { UsersModule } from 'users/users.module';
+import { AuthMiddleware } from 'auth/middlewares/auth.middleware';
+import { AccessGuard } from 'auth/guards/access.guard';
+import { AuthSignMiddleware } from 'auth/middlewares/auth-sign.middleware';
+import { SocialLinksModule } from 'social-links/social-links.module';
 
 @Module({
   imports: [

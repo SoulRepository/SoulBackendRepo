@@ -11,6 +11,7 @@ async function bootstrap() {
   app.enableCors({
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'x-web3-sign, x-web3-message, x-web3-address',
     preflightContinue: false,
     optionsSuccessStatus: 204,
   });

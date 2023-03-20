@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Like, Repository, FindOptionsSelect, ILike, In } from 'typeorm';
+import { Repository, FindOptionsSelect, ILike, In } from 'typeorm';
 import { Company, CompanyLink } from 'entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';
@@ -225,7 +225,7 @@ export class CompaniesService {
 
     const mapExist = keyBy(linksToUpdate, 'type');
     const updated = newLinks.reduce((accum, l) => {
-      if (mapExist?.[l.type]?.verified) {
+      if (mapExist?.[l.type]?.verified && mapExist?.[l.type].url === l.url) {
         return accum;
       }
       return {

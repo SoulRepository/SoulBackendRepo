@@ -225,7 +225,7 @@ export class CompaniesService {
 
     const mapExist = keyBy(linksToUpdate, 'type');
     const updated = newLinks.reduce((accum, l) => {
-      if (mapExist?.[l.type]?.verified) {
+      if (mapExist?.[l.type]?.verified && mapExist?.[l.type].url === l.url) {
         return accum;
       }
       return {

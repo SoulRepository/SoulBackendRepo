@@ -8,7 +8,6 @@ import {
   GraphqlResponse,
   DigiProofResponse,
   MetadataResult,
-  MetadataSingleResult,
 } from './intefaces';
 import { GraphError } from './errors/graph.error';
 import { FindManyFilterInterface } from './intefaces';
@@ -26,8 +25,7 @@ export class GraphService implements OnModuleInit {
 
   async onModuleInit(): Promise<void> {
     await this.registerQuery('get-digi-proofs');
-    await this.registerQuery('get-metadata-by-address');
-    await this.registerQuery('get-metadata');
+    await this.registerQuery('get-metadata-objects');
   }
 
   async getCompanies(filter?: FindManyFilterInterface) {
@@ -41,19 +39,11 @@ export class GraphService implements OnModuleInit {
           ...(filter?.digiProofType && {
             digiProofType_: { id: filter.digiProofType },
           }),
+          ...(filter?.sbtId && {
+            id: filter.sbtId,
+          }),
         },
         limit: filter?.limit ?? 100,
-      },
-    );
-
-    return data;
-  }
-
-  async getCompany(sbtId: string) {
-    const { data } = await this.sendQuery<MetadataSingleResult>(
-      'get-metadata',
-      {
-        id: sbtId,
       },
     );
 

@@ -5,6 +5,7 @@ export class SbtItemCompanyResponse {
   soulId: string;
   address: string;
   verified: boolean;
+  synced: boolean;
 }
 
 export class SbtItemResponse {

@@ -37,5 +37,7 @@ export class shortCategories1679044019567 implements MigrationInterface {
       .execute();
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    return;
+  }
 }

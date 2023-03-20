@@ -14,9 +14,9 @@ import { GetSocialLinkParamsDto } from './dto/get-social-link-params.dto';
 import { ProcessCodeBodyDto } from './dto/process-code-body.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CompaniesService } from 'companies/companies.service';
-import { VerifySign } from '../auth/decorators/verify-sign.decorator';
-import { OnlyForAdmin } from '../auth/decorators';
-import { AuthHeadersDto } from '../auth/dto';
+import { VerifySign } from 'auth/decorators/verify-sign.decorator';
+import { OnlyForAdmin } from 'auth/decorators';
+import { AuthHeadersDto } from 'auth/dto';
 import { HttpRequest } from 'common/interfaces';
 
 @Controller('social-links')

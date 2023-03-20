@@ -18,10 +18,10 @@ import { SearchCompanyDto } from 'companies/dto/search-company.dto';
 import { ImageCredentialsResponse } from 'companies/dto/image-credentials.response';
 import { Company } from 'entities';
 import { UpdateCompanyDto } from 'companies/dto/update-company.dto';
-import { OnlyForAdmin } from '../auth/decorators';
-import { VerifySign } from '../auth/decorators/verify-sign.decorator';
+import { OnlyForAdmin } from 'auth/decorators';
+import { VerifySign } from 'auth/decorators/verify-sign.decorator';
 import { HttpRequest } from 'common/interfaces';
-import { AuthHeadersDto } from '../auth/dto';
+import { AuthHeadersDto } from 'auth/dto';
 
 @Controller('companies')
 @ApiTags('Companies')

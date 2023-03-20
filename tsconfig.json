@@ -67,6 +67,42 @@
       ],
       "entities/*": [
         "src/entities/*"
+      ],
+      "auth": [
+        "src/auth"
+      ],
+      "auth/*": [
+        "src/auth/*"
+      ],
+      "digi-proofs": [
+        "src/digi-proofs"
+      ],
+      "digi-proofs/*": [
+        "src/digi-proofs/*"
+      ],
+      "sbt": [
+        "src/sbt"
+      ],
+      "sbt/*": [
+        "src/sbt/*"
+      ],
+      "social-links": [
+        "src/social-links"
+      ],
+      "social-links/*": [
+        "src/social-links/*"
+      ],
+      "users": [
+        "src/users"
+      ],
+      "users/*": [
+        "src/users/*"
+      ],
+      "graph": [
+        "src/graph"
+      ],
+      "graph/*": [
+        "src/graph/*"
       ]
     }
   }

@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
+import { UsersService } from 'users/users.service';
 import { User, UserRole } from 'entities';
 import { TokenPayload, TokenResponse } from './interfaces';
 

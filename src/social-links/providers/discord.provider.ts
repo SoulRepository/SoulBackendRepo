@@ -67,7 +67,22 @@ export class DiscordProvider implements BaseProvider {
     };
   }
 
-  refreshToken(old: TokenRetrieveResult): Promise<TokenRetrieveResult> {
-    return undefined;
+  async refreshToken(old: TokenRetrieveResult): Promise<TokenRetrieveResult> {
+    const result = await got
+      .post('https://discord.com/api/v10/oauth2/token', {
+        form: {
+          client_id: this.configService.get('DISCORD_CLIENT_ID'),
+          client_secret: this.configService.get('DISCORD_CLIENT_SECRET'),
+          grant_type: 'refresh_token',
+          refresh_token: old.refreshToken,
+        },
+      })
+      .json<DiscordAccessTokenResponse>();
+
+    return {
+      accessToken: result.access_token,
+      refreshToken: result.refresh_token,
+      validUntil: new Date(Date.now() + result.expires_in * 1000),
+    };
   }
 }

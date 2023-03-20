@@ -249,6 +249,10 @@ export class CompaniesService {
       soulId,
     });
 
+    if (!companyToCheckAddress) {
+      throw new NotFoundException('Company not exist');
+    }
+
     if (
       companyToCheckAddress.address.toLowerCase() === req.address.toLowerCase()
     ) {

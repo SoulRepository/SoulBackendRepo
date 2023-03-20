@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { GraphService } from '../graph/graph.service';
 import { Company } from 'entities';
 import { MetadataCompanyResult, MetadataObject } from '../graph/intefaces';
@@ -32,8 +32,16 @@ export class SbtService {
   }
 
   async findOne(sbtId: string, company: Company): Promise<SbtItemResponse> {
-    const data = await this.graphService.getCompany(sbtId);
-    return this.mapSbt(company, data.metadataObject);
+    const data = await this.graphService.getCompanies({
+      sbtId: sbtId,
+      withCompanyAddress: company.address,
+    });
+    if (!data?.metadataObjects?.length) {
+      throw new NotFoundException(
+        `Not found sbt sbtId=${sbtId} with company: ${company.address}`,
+      );
+    }
+    return this.mapSbt(company, data.metadataObjects.at(0));
   }
 
   private async mapSbt(

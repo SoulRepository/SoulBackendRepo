@@ -16,7 +16,6 @@ export class CompaniesCommand extends CommandRunner {
     passedParams: string[],
     options?: Record<string, any>,
   ): Promise<void> {
-
     return Promise.resolve(undefined);
   }
 

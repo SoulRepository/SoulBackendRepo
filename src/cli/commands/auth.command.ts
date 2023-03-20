@@ -7,6 +7,10 @@ import {
   QuestionSet,
 } from 'nest-commander';
 import got from 'got';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import * as os from 'os';
+import { TokenResponse } from 'auth/interfaces';
 
 @Command({
   name: 'auth',
@@ -15,6 +19,7 @@ export class AuthCommand extends CommandRunner {
   constructor(private readonly inquirerService: InquirerService) {
     super();
   }
+
   async run(
     passedParams: string[],
     options?: Record<string, any>,
@@ -30,9 +35,19 @@ export class AuthCommand extends CommandRunner {
           password: optionsWithPassword['password'],
         },
       })
-      .json();
-    console.log(authResult);
-    return Promise.resolve(undefined);
+      .json<TokenResponse>();
+
+    const cliConfigDir = path.resolve(os.homedir(), '.soul-cli');
+    await fs.mkdir(cliConfigDir, { recursive: true });
+
+    await fs.writeFile(
+      path.resolve(cliConfigDir, 'config.json'),
+      JSON.stringify({
+        endpoint: optionsWithPassword['endpoint'],
+        token: authResult.token,
+      }),
+    );
+    return;
   }
 
   @Option({

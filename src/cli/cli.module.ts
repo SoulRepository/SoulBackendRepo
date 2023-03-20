@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import { CompaniesModule } from './companies/companies.module';
+import { AuthCommand } from './commands/auth.command';
+import { CompaniesCommand } from './commands/companies.command';
+import { AuthPasswordQuestion } from './commands/auth-password.question';
 
 @Module({
-  imports: [CompaniesModule],
+  providers: [AuthCommand, CompaniesCommand, AuthPasswordQuestion],
 })
 export class CliModule {}

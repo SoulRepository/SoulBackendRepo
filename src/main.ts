@@ -8,16 +8,16 @@ import { ConfigSchema } from './config/config.schema';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors({
-    allowedHeaders: [
-      'x-web3-sign',
-      'x-web3-message',
-      'x-web3-address',
-      'content-type',
-    ],
-    origin: 'https://localhost:3000',
-    credentials: true,
-  });
+  // app.enableCors({
+  //   allowedHeaders: [
+  //     'x-web3-sign',
+  //     'x-web3-message',
+  //     'x-web3-address',
+  //     'content-type',
+  //   ],
+  //   origin: 'https://localhost:3000',
+  //   credentials: true,
+  // });
   app.setGlobalPrefix('api');
   const configService = app.get<ConfigService<ConfigSchema>>(ConfigService);
 

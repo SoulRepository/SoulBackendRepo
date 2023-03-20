@@ -20,6 +20,18 @@ module "s3_bucket" {
 #  acl    = "private" #public-read
   force_destroy = false
 
+  cors_rule = jsonencode(
+    [
+      {
+      allowed_headers = ["*"]
+      allowed_methods = ["GET"]
+      allowed_origins = ["*"]
+      expose_headers  = ["ETag"]
+      max_age_seconds = 3000
+      },
+    ]
+  )
+
    # Bucket policies
   attach_policy                         = true
   policy                                = data.aws_iam_policy_document.s3_policy.json

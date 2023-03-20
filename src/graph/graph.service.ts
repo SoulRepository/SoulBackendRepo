@@ -30,7 +30,7 @@ export class GraphService implements OnModuleInit {
 
   async getCompanies(filter?: FindManyFilterInterface) {
     const { data } = await this.sendQuery<MetadataResult>(
-      'get-metadata-by-address',
+      'get-metadata-objects',
       {
         filter: {
           ...(filter?.withCompanyAddress && {

@@ -1,9 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { GraphService } from '../graph/graph.service';
-import { Injectable } from '@nestjs/common';
 import { GraphService } from 'graph/graph.service';
 import { Company } from 'entities';
-import { MetadataCompanyResult, MetadataObject } from '../graph/intefaces';
 import { MetadataCompanyResult, MetadataObject } from 'graph/intefaces';
 import { CompaniesService } from 'companies/companies.service';
 import { ImagesService } from 'images/images.service';
@@ -11,7 +8,6 @@ import {
   SbtItemCompanyResponse,
   SbtItemResponse,
 } from './dto/sbt-item.response';
-import { FindManyFilterInterface } from '../graph/intefaces';
 import { FindManyFilterInterface } from 'graph/intefaces';
 
 @Injectable()

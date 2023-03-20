@@ -24,7 +24,7 @@ export class AuthSignMiddleware implements NestMiddleware {
     const address = values['x-web3-address'];
     if (sign && address && message) {
       const possibleAddress = ethers.verifyMessage(message, sign);
-      if (possibleAddress !== address) {
+      if (possibleAddress.toLowerCase() !== address.toLowerCase()) {
         throw new UnauthorizedException('Incorrect sign');
       }
       req.address = possibleAddress;

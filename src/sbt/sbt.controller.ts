@@ -30,6 +30,7 @@ export class SbtController {
     return this.sbtService.findMany(company, {
       digiProofType: query.digiProof,
       limit: query.limit,
+      withCompanyAddress: company.address,
     });
   }
 

@@ -1,4 +1,4 @@
-query GetCompaniesMetadataWithAddress($filter: MetadataObject_filter, $limit: Int) {
+query GetMetadataObjects($filter: MetadataObject_filter, $limit: Int) {
     metadataObjects(
         where: $filter,
         first: $limit,

@@ -22,7 +22,7 @@ export class SbtService {
     company: Company,
     filter: FindManyFilterInterface,
   ): Promise<SbtItemResponse[]> {
-    const data = await this.graphService.getCompanies(filter);
+    const data = await this.graphService.getSbtMetadata(filter);
 
     const sbtList = data.metadataObjects.map(async (sbt) =>
       this.mapSbt(company, sbt),
@@ -32,7 +32,7 @@ export class SbtService {
   }
 
   async findOne(sbtId: string, company: Company): Promise<SbtItemResponse> {
-    const data = await this.graphService.getCompanies({
+    const data = await this.graphService.getSbtMetadata({
       sbtId: sbtId,
       withCompanyAddress: company.address,
     });

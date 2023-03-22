@@ -11,6 +11,8 @@ import {
 } from './intefaces';
 import { GraphError } from './errors/graph.error';
 import { FindManyFilterInterface } from './intefaces';
+import { CompaniesResponse } from 'graph/intefaces/companiesResponse';
+import { SbtCompanyFilter } from 'graph/intefaces/sbt-company-filter.interface';
 
 @Injectable()
 export class GraphService implements OnModuleInit {
@@ -26,9 +28,10 @@ export class GraphService implements OnModuleInit {
   async onModuleInit(): Promise<void> {
     await this.registerQuery('get-digi-proofs');
     await this.registerQuery('get-metadata-objects');
+    await this.registerQuery('get-metadata-companies');
   }
 
-  async getCompanies(filter?: FindManyFilterInterface) {
+  async getSbtMetadata(filter?: FindManyFilterInterface) {
     const { data } = await this.sendQuery<MetadataResult>(
       'get-metadata-objects',
       {
@@ -53,6 +56,19 @@ export class GraphService implements OnModuleInit {
   async getDigiProofs() {
     const { data } = await this.sendQuery<DigiProofResponse>('get-digi-proofs');
     return data;
+  }
+
+  async getSbtCompanies(filter: SbtCompanyFilter) {
+    const { data } = await this.sendQuery<CompaniesResponse>(
+      'get-metadata-companies',
+      {
+        filter: {
+          ...(filter.address && { address: filter.address }),
+        },
+      },
+    );
+
+    return data?.companies;
   }
 
   private async registerQuery(name: string) {

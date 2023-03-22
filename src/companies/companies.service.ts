@@ -147,7 +147,7 @@ export class CompaniesService {
           soulId: Like(`%${query}%`),
         },
         {
-          name: Like(`%${query}%`),
+          name: ILike(`%${query}%`),
         },
       ],
       take: MAX_SEARCH_LIMIT,

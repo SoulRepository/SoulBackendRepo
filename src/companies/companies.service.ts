@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Repository, FindOptionsSelect, ILike, In } from 'typeorm';
+import { Repository, FindOptionsSelect, ILike, In, Like } from 'typeorm';
 import { Company, CompanyLink } from 'entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';
@@ -144,8 +144,10 @@ export class CompaniesService {
           address: query,
         },
         {
-          // soulId: Like(`%${query}%`),
-          soulId: query,
+          soulId: Like(`%${query}%`),
+        },
+        {
+          name: Like(`%${query}%`),
         },
       ],
       take: MAX_SEARCH_LIMIT,

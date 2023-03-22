@@ -18,6 +18,7 @@ import { CompanyResolvedImagesDto } from 'companies/dto/company-resolved-images.
 import { CreateLinkDto } from 'companies/dto/create-update-link.dto';
 import keyBy from 'lodash.keyby';
 import { HttpRequest } from 'common/interfaces';
+import { GraphService } from 'graph/graph.service';
 
 @Injectable()
 export class CompaniesService {
@@ -28,6 +29,7 @@ export class CompaniesService {
     private readonly companyLinkRepository: Repository<CompanyLink>,
     private readonly imagesService: ImagesService,
     private readonly categoriesService: CategoriesService,
+    private readonly graphService: GraphService,
   ) {}
 
   async createOne(data: CreateCompanyDto) {
@@ -49,6 +51,14 @@ export class CompaniesService {
     // const featuredImage =
     //   featuredImageKey &&
     //   (await this.imagesService.createImageFromKey(featuredImageKey));
+
+    const chainCompanies = await this.graphService.getSbtCompanies({
+      address: data.address,
+    });
+
+    if (!chainCompanies?.length) {
+      throw new NotFoundException('Company not exist on chain');
+    }
 
     const categories = await this.categoriesService.findByIds(categoriesIds);
     const notFoundCategories = categoriesIds.filter(

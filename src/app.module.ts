@@ -9,7 +9,6 @@ import { CompaniesModule } from 'companies/companies.module';
 import { ImagesModule } from 'images/images.module';
 import { ConfigModule } from '@common/config';
 import { ConfigSchema } from './config/config.schema';
-import { ContractsModule } from 'contracts/contracts.module';
 import { CategoriesModule } from 'categories/categories.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from './database/datasource';
@@ -30,7 +29,6 @@ import { SocialLinksModule } from 'social-links/social-links.module';
     CompaniesModule,
     ImagesModule,
     ConfigModule.register(ConfigSchema),
-    ContractsModule,
     CategoriesModule,
     TypeOrmModule.forRoot({
       ...dbConfig,

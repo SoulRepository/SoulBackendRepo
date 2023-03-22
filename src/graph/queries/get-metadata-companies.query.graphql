@@ -1,0 +1,7 @@
+query GetCompanies($filter: Company_filter) {
+    companies(where: $filter){
+        name
+        address
+        id
+    }
+}

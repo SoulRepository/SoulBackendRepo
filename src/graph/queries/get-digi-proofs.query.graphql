@@ -1,4 +1,4 @@
-query ExampleQuery {
+query DigiProofs {
     digiProofTypes {
         id
     }

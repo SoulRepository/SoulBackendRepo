@@ -11,12 +11,20 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import * as os from 'os';
 import { TokenResponse } from 'auth/interfaces';
+import { Logger } from '@nestjs/common';
+import { AuthService } from '../auth/auth.service';
+import { HttpClientService } from '../http-client/http-client.service';
 
 @Command({
   name: 'auth',
 })
 export class AuthCommand extends CommandRunner {
-  constructor(private readonly inquirerService: InquirerService) {
+  private readonly logger = new Logger();
+  constructor(
+    private readonly inquirerService: InquirerService,
+    private readonly authService: AuthService,
+    private readonly httpClientService: HttpClientService,
+  ) {
     super();
   }
 
@@ -28,25 +36,15 @@ export class AuthCommand extends CommandRunner {
       'password',
       options,
     );
-    const authResult = await got
-      .post(`${optionsWithPassword['endpoint']}/auth/login`, {
-        json: {
-          username: optionsWithPassword['username'],
-          password: optionsWithPassword['password'],
-        },
-      })
-      .json<TokenResponse>();
-
-    const cliConfigDir = path.resolve(os.homedir(), '.soul-cli');
-    await fs.mkdir(cliConfigDir, { recursive: true });
-
-    await fs.writeFile(
-      path.resolve(cliConfigDir, 'config.json'),
-      JSON.stringify({
-        endpoint: optionsWithPassword['endpoint'],
-        token: authResult.token,
-      }),
+    const { username, password, endpoint } = optionsWithPassword;
+    const token = await this.httpClientService.login(
+      username,
+      password,
+      endpoint,
     );
+
+    await this.authService.persistAuthData(endpoint, token);
+    this.logger.log('Auth successfully');
     return;
   }
 

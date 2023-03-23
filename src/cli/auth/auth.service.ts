@@ -7,7 +7,6 @@ import { CLI_AUTH_FILE, CLI_CONFIG_DIR } from './auth.constants';
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger();
   async persistAuthData(endpoint: string, token: string) {
     const toStore = JSON.stringify({
       endpoint,
@@ -24,8 +23,8 @@ export class AuthService {
       );
       return plainToInstance(AuthData, JSON.parse(data));
     } catch (e) {
-      this.logger.error(e);
-      this.logger.log('Auth file not valid, skip');
+      console.error(e);
+      console.log('Auth file not valid, skip');
       return;
     }
   }

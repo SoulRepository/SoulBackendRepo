@@ -3,15 +3,7 @@ import {
   CommandRunner,
   InquirerService,
   Option,
-  Question,
-  QuestionSet,
 } from 'nest-commander';
-import got from 'got';
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import * as os from 'os';
-import { TokenResponse } from 'auth/interfaces';
-import { Logger } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
 import { HttpClientService } from '../http-client/http-client.service';
 
@@ -19,7 +11,6 @@ import { HttpClientService } from '../http-client/http-client.service';
   name: 'auth',
 })
 export class AuthCommand extends CommandRunner {
-  private readonly logger = new Logger();
   constructor(
     private readonly inquirerService: InquirerService,
     private readonly authService: AuthService,
@@ -44,7 +35,7 @@ export class AuthCommand extends CommandRunner {
     );
 
     await this.authService.persistAuthData(endpoint, token);
-    this.logger.log('Auth successfully');
+    console.log('Auth successfully');
     return;
   }
 

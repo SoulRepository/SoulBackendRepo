@@ -141,7 +141,7 @@ export class CompaniesService {
     return this.companyRepository.find({
       where: [
         {
-          address: query,
+          address: ILike(query),
         },
         {
           soulId: Like(`%${query}%`),

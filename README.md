@@ -1,7 +1,9 @@
 # Soul Search API
 
 1. [Database migration](#database-migrations)
-2. [Service config](#service-config)
+2. [Using cli (soulctl)](#using-cli--soulctl-)
+3. [Service config](#service-config)
+4. [How to start?](#how-to-start)
 
 ### Database migrations
 
@@ -26,6 +28,14 @@ npm run migrations:run
 ```
 
 where replace `{migration_name}` to your migration name
+
+### Using cli (soulctl)
+
+For start using cli, you should clone this repo, and in root directory run
+
+- `npm run build:cli`
+- `npm link`
+- then in you will have command `soulctl`
 
 ### Service config
 

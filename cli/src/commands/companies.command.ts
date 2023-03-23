@@ -1,6 +1,5 @@
 import {
   Command,
-  Option,
   CommandRunner,
   InquirerService,
 } from 'nest-commander';

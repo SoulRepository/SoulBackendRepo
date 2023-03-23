@@ -4,15 +4,19 @@
   "description": "",
   "author": "",
   "private": true,
+  "bin": {
+    "soulctl": "dist/cli/cli/src/main.js"
+  },
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "build:cli": "tsc -p ./cli/tsconfig.cli.json",
     "format": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "eslint \"{src,apps,libs,test,cli}/**/*.ts\" --fix",
     "test": "node -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -25,8 +29,7 @@
     "migrations:create": "scripty",
     "migrations:run": "npm run typeorm migration:run",
     "migrations:revert": "npm run typeorm migration:revert",
-    "migrations:prod": "node dist/tools/createDatabase.js && node node_modules/.bin/typeorm -d dist/src/database/datasource.js migration:run",
-    "cli": "node -r tsconfig-paths/register -r ts-node/register src/cli.ts"
+    "migrations:prod": "node dist/tools/createDatabase.js && node node_modules/.bin/typeorm -d dist/src/database/datasource.js migration:run"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.282.0",

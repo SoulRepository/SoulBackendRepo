@@ -21,7 +21,11 @@ describe('ImagesService', () => {
         {
           provide: S3Client,
           useValue: {
-            send: jest.fn(),
+            send: jest.fn(() => {
+              return {
+                $metadata: {},
+              };
+            }),
           },
         },
         {

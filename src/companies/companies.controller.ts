@@ -22,6 +22,7 @@ import { OnlyForAdmin } from 'auth/decorators';
 import { VerifySign } from 'auth/decorators/verify-sign.decorator';
 import { HttpRequest } from 'common/interfaces';
 import { AuthHeadersDto } from 'auth/dto';
+import { NonceResponse } from 'companies/dto/nonce.response';
 
 @Controller('companies')
 @ApiTags('Companies')
@@ -82,5 +83,10 @@ export class CompaniesController {
   ): Promise<ImageCredentialsResponse> {
     await this.companiesService.ensureAddressRelatedToCompany(req, soulId);
     return this.companiesService.generateImageCredentials({ soulId }, data);
+  }
+
+  @Post('/:soulId/nonce')
+  getNonce(@Param('soulId') soulId: string): Promise<NonceResponse> {
+    return this.companiesService.retrieveCompanyNonce({ soulId });
   }
 }

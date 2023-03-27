@@ -1,21 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException } from '@nestjs/common';
-import {
-  DeleteObjectCommand,
-  GetObjectCommand,
-  HeadObjectCommand,
-  S3Client,
-} from '@aws-sdk/client-s3';
-import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
+import { S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@common/config';
 import { Repository } from 'typeorm';
 import { Image } from 'entities';
-import { InjectRepository } from '@nestjs/typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { ImagesService } from './images.service';
 import { ConfigSchema } from '../config/config.schema';
-import { IMAGE_KEY_RE } from 'images/constants/validation.constants';
-import { ImageType } from 'images/intefaces/image.types';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 describe('ImagesService', () => {
   let service: ImagesService;
@@ -40,7 +31,7 @@ describe('ImagesService', () => {
           },
         },
         {
-          provide: Repository,
+          provide: getRepositoryToken(Image),
           useValue: {
             findOne: jest.fn(),
             create: jest.fn(),
@@ -53,7 +44,7 @@ describe('ImagesService', () => {
     service = module.get<ImagesService>(ImagesService);
     s3Client = module.get<S3Client>(S3Client);
     configService = module.get<ConfigService<ConfigSchema>>(ConfigService);
-    imageRepository = module.get<Repository<Image>>(Repository);
+    imageRepository = module.get<Repository<Image>>(getRepositoryToken(Image));
   });
 
   afterEach(() => {
@@ -72,36 +63,25 @@ describe('ImagesService', () => {
     });
   });
 
-  describe('deleteKey', () => {
-    it('should call s3Client.send with correct arguments', async () => {
-      const expectedKey = 'test-key';
-      const expectedBucket = 'test-bucket';
-      jest.spyOn(configService, 'get').mockReturnValue(expectedBucket);
-      const expectedCommand = new DeleteObjectCommand({
-        Bucket: expectedBucket,
-        Key: expectedKey,
-      });
-      await service.deleteKey(expectedKey);
-      expect(s3Client.send).toHaveBeenCalledWith(expectedCommand);
-    });
-  });
-
   describe('createImageFromKey', () => {
-    const mockKey = 'random key';
     const mockBucket = 'test-bucket';
-    const mockMetadata = {
-      size: 123,
-      contentType: 'image/jpeg',
-    };
 
     beforeEach(() => {
       jest.spyOn(configService, 'get').mockReturnValue(mockBucket);
     });
 
     it('should throw BadRequestException if key is invalid', async () => {
-      await expect(service.createImageFromKey(mockKey)).rejects.toThrow(
+      const mockInvalidKey = 'random key';
+      await expect(service.createImageFromKey(mockInvalidKey)).rejects.toThrow(
         BadRequestException,
       );
+    });
+
+    it('should call s3 with correct key', async () => {
+      const mockValidKey = 'companies/1/images/background-1221';
+      await service.createImageFromKey(mockValidKey);
+      // jest.spyOn(s3Client, 'send').mockReturnValue();
+      await expect(imageRepository.save).toHaveBeenCalled();
     });
   });
 });

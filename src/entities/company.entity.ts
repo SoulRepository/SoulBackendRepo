@@ -71,4 +71,16 @@ export class Company extends BaseEntityDate {
   @Index({ unique: true })
   @Column()
   address: string;
+
+  @Index({ unique: true })
+  @Column({
+    nullable: true,
+  })
+  nonce?: string;
+
+  @Column({
+    nullable: true,
+    type: 'timestamptz',
+  })
+  nonceCreatedAt?: Date;
 }

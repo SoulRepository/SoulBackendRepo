@@ -79,4 +79,8 @@ export class ConfigSchema {
 
   @IsString()
   DISCORD_CLIENT_SECRET: string;
+
+  @IsNumber()
+  @Type(() => Number)
+  NONCE_VALID_TTL_SECONDS = 60 * 60 * 2;
 }

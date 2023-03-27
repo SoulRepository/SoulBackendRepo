@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
 import { Repository, FindOptionsSelect, ILike, In, Like } from 'typeorm';
 import { Company, CompanyLink } from 'entities';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,6 +20,9 @@ import { CreateLinkDto } from 'companies/dto/create-update-link.dto';
 import keyBy from 'lodash.keyby';
 import { HttpRequest } from 'common/interfaces';
 import { GraphService } from 'graph/graph.service';
+import { ConfigService } from '@common/config';
+import { ConfigSchema } from '../config/config.schema';
+import { NonceResponse } from 'companies/dto/nonce.response';
 
 @Injectable()
 export class CompaniesService {
@@ -30,6 +34,7 @@ export class CompaniesService {
     private readonly imagesService: ImagesService,
     private readonly categoriesService: CategoriesService,
     private readonly graphService: GraphService,
+    private readonly configService: ConfigService<ConfigSchema>,
   ) {}
 
   async createOne(data: CreateCompanyDto) {
@@ -253,6 +258,33 @@ export class CompaniesService {
     return Object.values(updated);
   }
 
+  async retrieveCompanyNonce(
+    where: FindUniqCompanyDto,
+  ): Promise<NonceResponse> {
+    const company = await this.findOne(where);
+
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+
+    if (!company.nonce || !company.nonceCreatedAt) {
+      return this.refreshNonce(company);
+    }
+
+    const validUntil = new Date(
+      company.nonceCreatedAt.getTime() +
+        this.configService.get<number>('NONCE_VALID_TTL_SECONDS') * 1000,
+    );
+    if (validUntil < new Date()) {
+      return this.refreshNonce(company);
+    }
+
+    return {
+      nonce: company.nonce,
+      validUntil,
+    };
+  }
+
   async ensureAddressRelatedToCompany(req: HttpRequest, soulId: string) {
     if (!req.address) {
       return;
@@ -272,5 +304,21 @@ export class CompaniesService {
     }
 
     throw new ForbiddenException('You not allowed to update not yours company');
+  }
+
+  private async refreshNonce(company: Company) {
+    const nonce = uuidv4();
+    const nonceCreatedAt = new Date();
+    await this.companyRepository.update(company.id, {
+      nonce,
+      nonceCreatedAt,
+    });
+    return {
+      nonce,
+      validUntil: new Date(
+        nonceCreatedAt.getTime() +
+          this.configService.get<number>('NONCE_VALID_TTL_SECONDS') * 1000,
+      ),
+    };
   }
 }

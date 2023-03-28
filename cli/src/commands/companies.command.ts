@@ -1,8 +1,4 @@
-import {
-  Command,
-  CommandRunner,
-  InquirerService,
-} from 'nest-commander';
+import { Command, CommandRunner, InquirerService } from 'nest-commander';
 import { HttpClientService } from '../http-client/http-client.service';
 import { CreateCompanyDto } from 'companies/dto/create-company.dto';
 

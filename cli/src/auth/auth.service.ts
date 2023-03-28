@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { AuthData } from './dto/auth-data.dto';
 import fs from 'node:fs/promises';

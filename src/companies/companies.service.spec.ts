@@ -1,14 +1,12 @@
 import { GraphService } from 'graph/graph.service';
 import { CategoriesService } from 'categories/categories.service';
-import { Company, CompanyLink, Image } from 'entities';
+import { Company, CompanyLink } from 'entities';
 import { Repository } from 'typeorm';
 import { CompaniesService } from 'companies/companies.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ImagesService } from 'images/images.service';
-import { S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@common/config';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { ConfigSchema } from '../config/config.schema';
 
 describe('CompaniesService', () => {
   let graphService: GraphService;
@@ -128,7 +126,9 @@ describe('CompaniesService', () => {
       { id: 1, name: 'Company 1', address: '123 Main St' },
       { id: 2, name: 'Company 2', address: '456 Elm St' },
     ];
-    jest.spyOn(companyRepository, 'find').mockResolvedValue(mockCompanies as Company[]);
+    jest
+      .spyOn(companyRepository, 'find')
+      .mockResolvedValue(mockCompanies as Company[]);
 
     const result = await service.findManyByQuery('company');
     expect(result).toEqual(mockCompanies);

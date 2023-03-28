@@ -1,12 +1,11 @@
-import { IsEnum, IsUrl } from 'class-validator';
+import { IsEnum } from 'class-validator';
 import { LinkType } from 'entities/enums/link-type.enum';
+import { IsValidSocialLink } from 'companies/decorators/is-valid-social-link.decorator';
 
 export class CreateLinkDto {
   @IsEnum(LinkType)
   type: LinkType;
 
-  @IsUrl({
-    protocols: ['http', 'https'],
-  })
+  @IsValidSocialLink('type')
   url: string;
 }

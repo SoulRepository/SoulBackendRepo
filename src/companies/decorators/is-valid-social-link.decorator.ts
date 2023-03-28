@@ -37,7 +37,7 @@ export function IsValidSocialLink(
               );
             case LinkType.DISCORD:
               return value.match(
-                /^(https?:\/\/)(www\.)?discord\.com\/users\/[0-9]+\/?$/,
+                /^(https?:\/\/)(www\.)?(discord|discordapp)\.com\/users\/[0-9]+\/?$/,
               );
             case LinkType.FACEBOOK:
               return value.match(

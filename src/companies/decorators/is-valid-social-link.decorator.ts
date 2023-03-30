@@ -47,16 +47,10 @@ export function IsValidSocialLink(
               return value.match(
                 /^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile)\/([-a-zA-Z0-9]+)\/*/gm,
               );
-            case LinkType.SITE:
-              return isURL(value, {
-                protocols: ['http', 'https'],
-              });
           }
-          return (
-            typeof value === 'string' &&
-            typeof relatedValue === 'string' &&
-            value.length > relatedValue.length
-          );
+          return isURL(value, {
+            protocols: ['http', 'https'],
+          });
         },
       },
     });
